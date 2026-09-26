@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>My Coaching App — Owner Panel</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#0b0e14;color:#e8eaf0;min-height:100vh}
+:root{--acc:#f59e0b;--acc2:rgba(245,158,11,.14);--card:#141926;--line:#232b3d;--mut:#8b94a8}
+input,select,button{font-family:inherit}
+button{cursor:pointer;border:none}
+input{background:#0f1420;border:1px solid var(--line);color:#e8eaf0;border-radius:10px;padding:12px 14px;width:100%;font-size:15px;outline:none}
+input:focus{border-color:var(--acc)}
+.btn{background:var(--acc);color:#111;font-weight:700;border-radius:10px;padding:12px 18px;font-size:15px}
+.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.btn.sm{padding:8px 14px;font-size:13px;border-radius:8px}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+/* AUTH */
+.authhead{text-align:center;padding:34px 0 8px}
+.authhead .logo{font-size:34px;font-weight:800;letter-spacing:-.5px}
+.authhead .logo b{color:var(--acc)}
+.authhead p{color:var(--mut);font-size:14px;margin-top:6px}
+.tabs{display:flex;gap:8px;margin:22px 0 16px;background:#0f1420;border:1px solid var(--line);border-radius:12px;padding:5px}
+.tabs button{flex:1;background:transparent;color:var(--mut);padding:10px;border-radius:9px;font-weight:600;font-size:14px}
+.tabs button.on{background:var(--acc);color:#111}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.card h3{font-size:16px;margin-bottom:14px}
+label{display:block;font-size:12px;color:var(--mut);margin:0 0 6px 4px;font-weight:600;letter-spacing:.3px}
+.frow{margin-bottom:14px}
+.f2{display:flex;gap:12px}.f2>*{flex:1}
+.hint{font-size:12px;color:var(--mut);margin-top:6px}
+.colorrow{display:flex;gap:8px;flex-wrap:wrap}
+.colorrow button{width:34px;height:34px;border-radius:50%;border:2px solid transparent}
+.colorrow button.on{border-color:#fff}
+.err{color:#ff6b6b;font-size:13px;margin-top:8px;display:none}
+/* DASH */
+.topbar{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+.topbar .av{width:44px;height:44px;border-radius:12px;background:var(--acc);color:#111;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topbar .ti{flex:1;min-width:0}
+.topbar .ti b{font-size:17px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .ti span{font-size:12px;color:var(--mut)}
+.trial{border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px}
+.trial.ok{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.trial.warn{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+.trial.bad{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.sharebox .url{display:flex;gap:8px;margin:10px 0}
+.sharebox .url input{flex:1;font-size:13px}
+.qr{width:150px;height:150px;background:#fff;border-radius:12px;padding:8px;display:block;margin:12px auto 0}
+.crs{background:#0f1420;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.crs .hd{display:flex;align-items:center;gap:12px}
+.crs .ic{width:40px;height:40px;border-radius:10px;background:var(--acc2);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px}
+.crs .hd b{flex:1;font-size:15px}
+.crs .hd .pr{color:var(--acc);font-weight:700}
+.crs .meta{color:var(--mut);font-size:12px;margin:10px 0 0 52px}
+.mini{display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.crs.open .mini{display:block}
+.vrow{display:flex;align-items:center;gap:10px;background:#141926;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.vrow .n{width:26px;height:26px;border-radius:8px;background:var(--acc2);color:var(--acc);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vrow b{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vrow button{background:transparent;color:#f87171;font-size:16px;padding:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tag.free{background:rgba(34,197,94,.15);color:#4ade80}
+.tag.used{background:rgba(239,68,68,.15);color:#f87171}
+.earn{display:flex;gap:12px;margin-bottom:14px}
+.earn .box{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.earn .box span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.earn .box b{display:block;font-size:22px;margin-top:4px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;opacity:0;transition:all .3s;z-index:99;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.pw{background:var(--acc2);color:var(--acc);text-align:center;font-size:11px;padding:8px;border-radius:0 0 16px 16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ AUTH ============ -->
+  <div id="authView">
+    <div class="authhead">
+      <div class="logo">My<span>C</span>oach</div>
+      <p>Your own coaching app — set up in 2 minutes</p>
+    </div>
+    <div class="tabs">
+      <button id="tabSignup" class="on" onclick="showTab(1)">Create account</button>
+      <button id="tabLogin" onclick="showTab(2)">Login</button>
+    </div>
+
+    <div class="card" id="signupCard">
+      <h3>Start your 14-day free trial</h3>
+      <div class="frow"><label>INSTITUTE / TUITION NAME</label><input id="suName" placeholder="e.g. Sharma Physics Classes"></div>
+      <div class="f2">
+        <div class="frow"><label>OWNER NAME</label><input id="suOwner" placeholder="Your name"></div>
+        <div class="frow"><label>EMAIL</label><input id="suEmail" type="email" placeholder="you@email.com"></div>
+      </div>
+      <div class="frow"><label>PASSWORD</label><input id="suPass" type="password" placeholder="Minimum 6 characters"></div>
+      <div class="frow"><label>BRAND COLOR</label>
+        <div class="colorrow" id="colorRow"></div>
+      </div>
+      <button class="btn" style="width:100%" onclick="doSignup()">Create My App →</button>
+      <div class="err" id="suErr"></div>
+      <div class="hint">No card needed. No permission needed. Your app link is generated instantly.</div>
+    </div>
+
+    <div class="card" id="loginCard" style="display:none">
+      <h3>Welcome back</h3>
+      <div class="frow"><label>EMAIL</label><input id="liEmail" type="email"></div>
+      <div class="frow"><label>PASSWORD</label><input id="liPass" type="password"></div>
+      <button class="btn" style="width:100%" onclick="doLogin()">Login →</button>
+      <div class="err" id="liErr"></div>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <div id="dashView" style="display:none">
+    <div class="topbar">
+      <div class="av" id="dbAvatar">S</div>
+      <div class="ti"><b id="dbName">—</b><span id="dbOwner">—</span></div>
+      <button class="btn ghost sm" onclick="logout()">Logout</button>
+    </div>
+    <div class="trial ok" id="trialBar">⏳ Loading…</div>
+
+    <div class="card sharebox">
+      <h3>📱 Share your app with students</h3>
+      <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
+      <div class="hint">Students open this link — it looks and feels like YOUR app: your name, your color, your courses. They can even install it on their phone home screen.</div>
+      <img class="qr" id="qrImg" alt="QR code">
+    </div>
+
+    <div class="card">
+      <h3>💰 Sales (you keep 100%)</h3>
+      <div class="earn">
+        <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
+        <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
+        <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📚 Courses</h3>
+      <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics Full Course"></div>
+      <div class="f2">
+        <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (students pay you directly)" value="499"></div>
+        <div class="frow"><button class="btn" style="width:100%" onclick="addCourse()">+ Add course</button></div>
+      </div>
+      <div id="courseList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- COURSE DETAIL -->
+<div id="crsModal" style="display:none;position:fixed;inset:0;background:rgba(5,8,14,.85);z-index:50;overflow-y:auto">
+  <div class="wrap" style="padding-top:30px">
+    <button class="btn ghost sm" onclick="closeCrs()">← Back</button>
+    <div class="card" style="margin-top:14px">
+      <h3 id="cmTitle" style="font-size:19px">Course</h3>
+      <div class="hint" id="cmPrice"></div>
+      <div style="margin-top:16px">
+        <label>ADD VIDEO (YouTube link)</label>
+        <div class="frow"><input id="vTitle" placeholder="Video title — e.g. Chapter 1: Motion"></div>
+        <div class="frow"><input id="vUrl" placeholder="https://youtube.com/watch?v=... or youtu.be/..."></div>
+        <button class="btn" style="width:100%" onclick="addVideo()">+ Add video</button>
+        <div class="hint">Tip: keep your videos <b>Unlisted</b> on YouTube — only your students, inside your app, can watch them.</div>
+        <div id="videoList" style="margin-top:16px"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎟️ Access codes</h3>
+      <div class="f2">
+        <div class="frow"><input id="codeCount" type="number" value="10" min="1" max="100"></div>
+        <div class="frow"><button class="btn" style="width:100%" onclick="genCodes()">Generate codes</button></div>
+      </div>
+      <div class="hint">Sell your course, take payment yourself (cash / UPI), and give the student one code. One code = one student = full course access.</div>
+      <div id="codeList" style="margin-top:12px;max-height:320px;overflow-y:auto"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SB='https://ehbdvjkguungjccaaqsm.supabase.co/rest/v1/';
+var KEY='sb_publishable_ip0uOdOcSplrTkOIw5MDnA_jwSe6jDa';
+var APP_BASE='https://mrmonk0369-tech.github.io/aurisi-apps/wl-app.html';
+var COLORS=['#f59e0b','#ef4444','#8b5cf6','#06b6d4','#22c55e','#ec4899','#3b82f6'];
+var CUR=null, CRS=[], selCrs=null;
+
+function $(id){return document.getElementById(id)}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2400)}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>')}
+function sb(path,opts){
+  opts=opts||{};
+  opts.headers={apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'};
+  if(opts.method==='POST'||opts.method==='PATCH')opts.headers.Prefer='return=representation';
+  return fetch(SB+path,opts).then(function(r){return r.json()});
+}
+/* ---- SHA-256 (compact, works everywhere) ---- */
+function sha256(str){
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var msg=[];for(var i=0;i<str.length;i++){var c=str.charCodeAt(i);if(c>255){msg.push(0xEF,0xBB,0xBF);msg.push(c&255)}else msg.push(c)}
+  var bitLen=msg.length*8;
+  msg.push(0x80);
+  while(msg.length%64!==56)msg.push(0);
+  var hi=Math.floor(bitLen/4294967296),lo=bitLen>>>0;
+  msg.push((hi>>>24)&255,(hi>>>16)&255,(hi>>>8)&255,hi&255,(lo>>>24)&255,(lo>>>16)&255,(lo>>>8)&255,lo&255);
+  function rotr(x,n){return (x>>>n)|(x<<(32-n))}
+  for(var b=0;b<msg.length;b+=64){
+    var w=new Array(64);
+    for(var t=0;t<16;t++)w[t]=(msg[b+t*4]<<24)|(msg[b+t*4+1]<<16)|(msg[b+t*4+2]<<8)|msg[b+t*4+3];
+    for(t=16;t<64;t++){
+      var s0=rotr(w[t-15],7)^rotr(w[t-15],18)^(w[t-15]>>>3);
+      var s1=rotr(w[t-2],17)^rotr(w[t-2],19)^(w[t-2]>>>10);
+      w[t]=(w[t-16]+s0+w[t-7]+s1)|0;
+    }
+    var a=H[0],bb=H[1],c2=H[2],d=H[3],e=H[4],f=H[5],g=H[6],hh=H[7];
+    for(t=0;t<64;t++){
+      var S1=rotr(e,6)^rotr(e,11)^rotr(e,25);
+      var ch=(e&f)^(~e&g);
+      var temp1=(hh+S1+ch+K[t]+w[t])|0;
+      var S0=rotr(a,2)^rotr(a,13)^rotr(a,22);
+      var mj=(a&bb)^(a&c2)^(bb&c2);
+      var temp2=(S0+mj)|0;
+      hh=g;g=f;f=e;e=(d+temp1)|0;d=c2;c2=bb;bb=a;a=(temp1+temp2)|0;
+    }
+    H[0]=(H[0]+a)|0;H[1]=(H[1]+bb)|0;H[2]=(H[2]+c2)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+hh)|0;
+  }
+  var out='';for(i=0;i<8;i++){for(var j=28;j>=0;j-=4)out+=((H[i]>>>j)&15).toString(16)}
+  return out;
+}
+function h(s){return sha256('aurisi-wl|'+s)}
+
+/* ---- colors ---- */
+var selColor=COLORS[0];
+function initColors(){
+  var row=$('colorRow');
+  COLORS.forEach(function(c,i){
+    var b=document.createElement('button');
+    b.style.background=c;b.className=i===0?'on':'';
+    b.onclick=function(){selColor=c;row.querySelectorAll('button').forEach(function(x){x.className=''});b.className='on'};
+    row.appendChild(b);
+  });
+}
+
+function showTab(n){
+  $('tabSignup').className=n===1?'on':'';$('tabLogin').className=n===2?'on':'';
+  $('signupCard').style.display=n===1?'block':'none';
+  $('loginCard').style.display=n===2?'block':'none';
+}
+function slugify(name){
+  return String(name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,22)||'institute';
+}
+function rand(n){var s='',A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';for(var i=0;i<n;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
+
+async function doSignup(){
+  var name=$('suName').value.trim(),owner=$('suOwner').value.trim(),email=$('suEmail').value.trim().toLowerCase(),pass=$('suPass').value;
+  var e=$('suErr');e.style.display='none';
+  if(name.length<2)return showErr(e,'Enter your institute name.');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return showErr(e,'Enter a valid email.');
+  if(pass.length<6)return showErr(e,'Password must be at least 6 characters.');
+  try{
+    var dupe=await sb('wl_institutes?email=eq.'+encodeURIComponent(email)+'&select=id');
+    if(dupe&&dupe.length)return showErr(e,'This email already has an account. Login instead.');
+    var base=slugify(name),slug=base+'-'+rand(3).toLowerCase();
+    for(var t=0;t<3;t++){
+      var ex=await sb('wl_institutes?slug=eq.'+encodeURIComponent(slug)+'&select=id');
+      if(!ex||!ex.length)break;
+      slug=base+'-'+rand(3).toLowerCase();
+    }
+    var trial=new Date(Date.now()+14*86400000).toISOString().slice(0,10);
+    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'trial',trial_ends:trial,status:'active'})});
+    if(!rows||!rows.length)throw new Error('Could not create account. Try again.');
+    CUR=rows[0];save();enterDash();
+  }catch(err){showErr(e,(err&&err.message)||'Signup failed. Try again.')}
+}
+function showErr(e,m){e.textContent=m;e.style.display='block'}
+async function doLogin(){
+  var email=$('liEmail').value.trim().toLowerCase(),pass=$('liPass').value;
+  var e=$('liErr');e.style.display='none';
+  try{
+    var rows=await sb('wl_institutes?email=eq.'+encodeURIComponent(email)+'&pass_hash=eq.'+h(pass)+'&select=*');
+    if(!rows||!rows.length)return showErr(e,'Wrong email or password.');
+    CUR=rows[0];save();enterDash();
+  }catch(err){showErr(e,'Login failed. Check internet.')}
+}
+function save(){try{localStorage.setItem('wl_owner',JSON.stringify({id:CUR.id,slug:CUR.slug}))}catch(e){}}
+function logout(){CUR=null;try{localStorage.removeItem('wl_owner')}catch(e){};$('dashView').style.display='none';$('authView').style.display='block'}
+async function tryRestore(){
+  try{
+    var s=JSON.parse(localStorage.getItem('wl_owner')||'null');
+    if(!s)return false;
+    var rows=await sb('wl_institutes?id=eq.'+s.id+'&select=*');
+    if(!rows||!rows.length)return false;
+    CUR=rows[0];return true;
+  }catch(e){return false}
+}
+
+/* ---- dashboard ---- */
+async function enterDash(){
+  document.documentElement.style.setProperty('--acc',CUR.brand_color||'#f59e0b');
+  $('authView').style.display='none';$('dashView').style.display='block';
+  $('dbName').textContent=CUR.name;
+  $('dbOwner').textContent='Owner: '+(CUR.owner_name||CUR.email)+' · /'+CUR.slug;
+  $('dbAvatar').textContent=(CUR.name||'S').trim().charAt(0).toUpperCase();
+  var url=APP_BASE+'?i='+CUR.slug;
+  $('appUrl').value=url;
+  $('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(url);
+  renderTrial();
+  await loadCourses();renderStats();
+}
+function daysLeft(){
+  if(!CUR.trial_ends)return 0;
+  return Math.ceil((new Date(CUR.trial_ends+'T23:59:59')-new Date())/86400000);
+}
+function expired(){return CUR.plan==='trial'&&daysLeft()<=0||CUR.status==='expired'}
+function renderTrial(){
+  var b=$('trialBar'),d=daysLeft();
+  if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Trial over. Contact AURISI (ntc05448@gmail.com) to activate your plan and restore your app.'}
+  else if(CUR.plan!=='trial'){b.className='trial ok';b.textContent='✅ Plan active — thanks for being a member!'}
+  else if(d<=3){b.className='trial warn';b.textContent='⏳ Trial: '+d+' day'+(d===1?'':'s')+' left. Contact AURISI to keep your app running.'}
+  else{b.className='trial ok';b.textContent='🎁 Free trial: '+d+' days left — full access, no limits.'}
+}
+function copyUrl(){
+  var i=$('appUrl');i.select();
+  try{navigator.clipboard.writeText(i.value)}catch(e){try{document.execCommand('copy')}catch(e2){}}
+  toast('Link copied — send it to your students!');
+}
+async function loadCourses(){
+  CRS=await sb('wl_courses?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&order=id.asc&select=*')||[];
+  renderCourses();
+}
+function renderCourses(){
+  var el=$('courseList');
+  if(!CRS.length){el.innerHTML='<div class="hint" style="text-align:center;padding:18px 0">No courses yet. Add your first course above — takes 30 seconds.</div>';return}
+  el.innerHTML=CRS.map(function(c){
+    return '<div class="crs" id="crs'+c.id+'">'+
+      '<div class="hd" onclick="openCrs('+c.id+')">'+
+        '<div class="ic">▶</div><b>'+esc(c.title)+'</b>'+
+        '<span class="pr">₹'+(Number(c.price)||0)+'</span>'+
+      '</div><div class="meta" id="meta'+c.id+'"></div><div class="mini" id="mini'+c.id+'"></div></div>';
+  }).join('');
+  CRS.forEach(function(c){loadMeta(c)});
+}
+async function loadMeta(c){
+  var vs=await sb('wl_videos?course_id=eq.'+c.id+'&order=pos.asc,id.asc&select=*')||[];
+  var cs=await sb('wl_codes?course_id=eq.'+c.id+'&select=id,used_by')||[];
+  var used=cs.filter(function(x){return x.used_by}).length;
+  var m=$('meta'+c.id);if(m)m.textContent=vs.length+' video'+(vs.length===1?'':'s')+' · '+used+' sold · '+(cs.length-used)+' codes left';
+  var mm=$('mini'+c.id);
+  if(mm){
+    mm.innerHTML='<table><tr><th>#</th><th>Video</th><th></th></tr>'+vs.map(function(v,i){
+      return '<tr><td>'+(i+1)+'</td><td>'+esc(v.title)+'</td><td><button onclick="delVideo('+v.id+','+c.id+')">✕</button></td></tr>';
+    }).join('')+'</table>';
+  }
+}
+async function addCourse(){
+  var t=$('newCourse').value.trim(),p=Number($('newPrice').value)||0;
+  if(t.length<3)return toast('Enter a course name');
+  await sb('wl_courses',{method:'POST',body:JSON.stringify({inst_slug:CUR.slug,title:t,price:p})});
+  $('newCourse').value='';toast('Course added ✓');
+  await loadCourses();renderStats();
+}
+function openCrs(id){
+  selCrs=CRS.find(function(c){return c.id===id});if(!selCrs)return;
+  $('cmTitle').textContent=selCrs.title;
+  $('cmPrice').textContent='Course price: ₹'+(Number(selCrs.price)||0)+' — you collect this directly from students';
+  $('crsModal').style.display='block';
+  loadCodes();
+}
+function closeCrs(){$('crsModal').style.display='none'}
+function ytId(u){
+  var m=String(u).match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([A-Za-z0-9_-]{6,})/);
+  return m?m[1]:(/^[A-Za-z0-9_-]{6,}$/.test(String(u).trim())?String(u).trim():'');
+}
+async function addVideo(){
+  var t=$('vTitle').value.trim(),u=$('vUrl').value.trim(),id=ytId(u);
+  if(t.length<2)return toast('Enter a video title');
+  if(!id)return toast('Paste a valid YouTube link');
+  var vs=await sb('wl_videos?course_id=eq.'+selCrs.id+'&select=pos&order=pos.desc&limit=1')||[];
+  var pos=vs.length?vs[0].pos+1:0;
+  await sb('wl_videos',{method:'POST',body:JSON.stringify({course_id:selCrs.id,title:t,yt_id:id,pos:pos})});
+  $('vTitle').value='';$('vUrl').value='';toast('Video added ✓');
+  loadCourses();
+}
+async function delVideo(vid,cid){
+  await sb('wl_videos?id=eq.'+vid,{method:'DELETE'});
+  toast('Video removed');loadCourses();
+}
+async function genCodes(){
+  var n=Math.min(100,Math.max(1,Number($('codeCount').value)||1));
+  var rows=[];
+  for(var i=0;i<n;i++)rows.push({course_id:selCrs.id,inst_slug:CUR.slug,code:'WL-'+rand(8),price_at_sale:Number(selCrs.price)||0});
+  await sb('wl_codes',{method:'POST',body:JSON.stringify(rows)});
+  toast(n+' codes generated ✓');
+  loadCodes();loadCourses();renderStats();
+}
+async function loadCodes(){
+  var cs=await sb('wl_codes?course_id=eq.'+selCrs.id+'&order=id.desc&limit=100&select=*')||[];
+  $('codeList').innerHTML=cs.length?'<table><tr><th>Code</th><th>Status</th></tr>'+cs.map(function(c){
+    var st=c.used_by?'<span class="tag used">Used · '+esc(c.used_by)+'</span>':'<span class="tag free">Available</span>';
+    return '<tr><td style="font-family:monospace;letter-spacing:1px">'+esc(c.code)+'</td><td>'+st+'</td></tr>';
+  }).join('')+'</table>':'<div class="hint">No codes yet — generate above.</div>';
+}
+async function renderStats(){
+  var cs=await sb('wl_codes?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&select=used_by,price_at_sale')||[];
+  var sold=cs.filter(function(c){return c.used_by}).length;
+  var rev=sold===0?0:cs.filter(function(c){return c.used_by}).reduce(function(a,c){return a+(Number(c.price_at_sale)||0)},0);
+  $('stSold').textContent=sold;$('stRev').textContent='₹'+rev.toLocaleString('en-IN');
+  $('stFree').textContent=cs.length-sold;
+}
+initColors();
+tryRestore().then(function(ok){if(ok)enterDash()});
+</script>
+</body>
+</html>
