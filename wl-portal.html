@@ -125,13 +125,14 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
     <div class="card sharebox">
       <h3>📱 Share your app with students</h3>
       <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
-      <div class="hint">Students open this link — it looks and feels like YOUR app: your name, your color, your courses. They can even install it on their phone home screen.</div>
+      <div class="hint">Students open this link — it looks and feels like YOUR app: your name, your color, your courses. They create their own account (email & password), enter the code you gave them, and your courses appear in THEIR account — on any phone they log in from.</div>
       <img class="qr" id="qrImg" alt="QR code">
     </div>
 
     <div class="card">
       <h3>💰 Sales (you keep 100%)</h3>
       <div class="earn">
+        <div class="box"><span>Students</span><b id="stStu">0</b></div>
         <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
         <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
         <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
@@ -414,8 +415,10 @@ async function renderStats(){
   var cs=await sb('wl_codes?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&select=used_by,price_at_sale')||[];
   var sold=cs.filter(function(c){return c.used_by}).length;
   var rev=sold===0?0:cs.filter(function(c){return c.used_by}).reduce(function(a,c){return a+(Number(c.price_at_sale)||0)},0);
+  var st=await sb('wl_students?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&select=id')||[];
   $('stSold').textContent=sold;$('stRev').textContent='₹'+rev.toLocaleString('en-IN');
   $('stFree').textContent=cs.length-sold;
+  $('stStu').textContent=st.length;
 }
 initColors();
 tryRestore().then(function(ok){if(ok)enterDash()});
