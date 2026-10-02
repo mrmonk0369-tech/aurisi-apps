@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.4 JIO LAUNCH MODE — free & unlimited first -->
+<!-- wl-portal v2.5 FREE ONLY — no pricing, pure adoption -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -126,13 +126,7 @@ label{display:block;font-size:11.5px;color:var(--mut);margin:0 0 7px 2px;font-we
 .sharebox .url{display:flex;gap:8px;margin:12px 0}
 .sharebox .url input{flex:1;font-size:13px;font-family:ui-monospace,Menlo,monospace}
 .qr{width:150px;height:150px;background:#fff;border-radius:14px;padding:8px;display:block;margin:16px auto 0}
-.plan{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:16px 2px;transition:background .15s}
 .plan:last-of-type{border-bottom:none}
-.plan:hover{background:rgba(255,255,255,.015)}
-.plan .nm{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
-.plan .mt{font-size:12px;color:var(--mut);margin-top:3px}
-.plan .pr{font-size:16px;font-weight:600;letter-spacing:-.02em;color:#fff}
-.plan .pr small{font-size:11.5px;color:var(--mut2);font-weight:500}
 .crs{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px}
 .crs .hd{display:flex;align-items:center;gap:12px;cursor:pointer}
 .crs .ic{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.05);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
@@ -155,7 +149,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .foot{text-align:center;color:var(--mut2);font-size:11.5px;padding:34px 0 0}
 .foot b{color:var(--mut)}
-.pop{font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);background:color-mix(in srgb,var(--acc) 10%,transparent);padding:3px 8px;border-radius:99px;margin-left:8px}
 
 /* ===== v2.2 screen flow (no long scroll) ===== */
 .screen{display:none}
@@ -164,27 +157,11 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 #landingView.on{display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 190px)}
 @media(max-width:860px){#landingView.on{min-height:auto;padding:8px 0 40px}}
 #authView.on{display:block;max-width:452px;margin:24px auto 40px}
-#pricingView{max-width:920px;margin:0 auto}
 .screenbar{display:flex;align-items:center;gap:12px;margin:6px 0 30px}
 .screenbar .back{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.02);transition:.15s}
 .screenbar .back:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 .screenbar h2{font-size:19px;font-weight:600;letter-spacing:-.02em}
 .screenbar .sub2{font-size:13px;color:var(--mut);margin-left:auto}
-.plangrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px}
-@media(max-width:900px){.plangrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.plangrid{grid-template-columns:1fr}}
-.planbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;position:relative;transition:.2s}
-.planbox:hover{border-color:var(--line2);transform:translateY(-2px)}
-.planbox .pn{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
-.planbox .pm{font-size:12px;color:var(--mut);margin-top:5px;min-height:32px;line-height:1.5}
-.planbox .pp{font-size:24px;font-weight:600;letter-spacing:-.03em;margin:14px 0 2px}
-.planbox .pp small{font-size:12px;color:var(--mut2);font-weight:500;letter-spacing:0}
-.planbox .pgo{margin-top:auto}
-.planbox.hot{border-color:color-mix(in srgb,var(--acc) 45%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent);background-image:linear-gradient(180deg,color-mix(in srgb,var(--acc) 7%,transparent),transparent 70%)}
-.planbox .pn .soon-tag{font-size:9.5px;color:var(--mut2);border:1px solid var(--line);padding:2px 7px;border-radius:99px;margin-left:7px;vertical-align:middle;font-weight:600;letter-spacing:.05em}
-.planbox .pop{position:absolute;top:-9px;right:16px;font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);background:color-mix(in srgb,var(--acc) 12%,transparent);padding:3px 8px;border-radius:99px}
-.pfeat{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);line-height:1.9}
-.pfeat b{color:#b9c1cf;font-weight:600}
 .navlink{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;transition:.15s;background:none}
 .navlink:hover{color:var(--ink);background:rgba(255,255,255,.04)}
 </style>
@@ -197,7 +174,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     <div class="mark">A</div>
     <div class="wordmark">AURISI <span>· Institute Studio</span></div>
     <div class="right">
-      <button class="navlink" onclick="wlGoPricing()">Pricing</button>
       <button class="navlink" onclick="wlGoAuth(2)">Sign in</button>
       <button class="btn sm" onclick="wlGoAuth(1)">Start free</button>
     </div>
@@ -212,7 +188,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell. <b>Free &amp; unlimited right now</b> — no limits, no card, no expiry.</p>
         <div class="cta">
           <button class="btn" onclick="wlGoAuth(1)">Create my app — free &amp; unlimited</button>
-          <button class="btn ghost" onclick="wlGoPricing()">View pricing</button>
         </div>
         <div class="stats">
           <div class="stat"><b>Unlimited</b><span>Students</span></div>
@@ -235,55 +210,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ============ SCREEN 2: PRICING (own screen) ============ -->
-  <div id="pricingView" class="screen">
-    <div class="screenbar">
-      <button class="back" onclick="wlScreen('landing')">← Back</button>
-      <h2>Pricing</h2>
-      <span class="sub2">Everything is free right now</span>
-    </div>
-    <div class="plangrid">
-      <div class="planbox hot">
-        <span class="pop">LAUNCH MODE</span>
-        <div class="pn">Founding Free</div>
-        <div class="pm">Unlimited students &amp; courses · no expiry</div>
-        <div class="pp">₹0<small> — launch mode</small></div>
-        <div class="pfeat"><b>Everything, free</b><br>Unlimited students<br>Unlimited courses &amp; material<br>No card, no expiry</div>
-        <div class="pgo"><button class="btn wide sm" onclick="wlGoAuth(1)">Start free</button></div>
-      </div>
-      <div class="planbox">
-        <div class="pn">Monthly</div>
-        <div class="pm">Pay as you go · up to 100 students</div>
-        <div class="pp">₹999<small> / 30 days</small></div>
-        <div class="pfeat"><b>Includes</b><br>Your branded app<br>Your courses &amp; codes<br>Unlimited AI lessons</div>
-        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
-      </div>
-      <div class="planbox">
-        <div class="pn">Institute Basic</div>
-        <div class="pm">1 year · up to 100 students</div>
-        <div class="pp">₹4,999<small> / year</small></div>
-        <div class="pfeat"><b>Includes</b><br>Everything in Monthly<br>1-year validity<br>Priority support</div>
-        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
-      </div>
-      <div class="planbox">
-        <span class="pop">POPULAR</span>
-        <div class="pn">Institute Standard</div>
-        <div class="pm">1 year · up to 300 students</div>
-        <div class="pp">₹9,999<small> / year</small></div>
-        <div class="pfeat"><b>Includes</b><br>Everything in Basic<br>300 students<br>Setup help over phone</div>
-        <div class="pgo"><button class="btn wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
-      </div>
-      <div class="planbox">
-        <div class="pn">Institute Pro</div>
-        <div class="pm">1 year · unlimited students</div>
-        <div class="pp">₹19,999<small> / year</small></div>
-        <div class="pfeat"><b>Includes</b><br>Everything in Standard<br>Unlimited students<br>Custom plans &amp; chains</div>
-        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
-      </div>
-    </div>
-    <div class="hint" style="margin-top:22px">Paid plans aren't active yet — we're in launch mode, everything is free and unlimited. Founding institutes keep free access. Large schools &amp; chains: ntc05448@gmail.com</div>
   </div>
 
   <!-- ============ SCREEN 3: AUTH (own screen) ============ -->
@@ -350,13 +276,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
       <div class="hint">Students open this link — it looks and feels like your app: your name, your color, your courses. They create their own account (email &amp; password), enter the code you gave them, and your courses appear in their account — on any phone they log in from.</div>
       <img class="qr" id="qrImg" alt="QR code">
-    </div>
-
-    <div class="card" id="plansCard">
-      <h3>Plans &amp; pricing</h3>
-      <div class="hint" style="margin-bottom:8px">You're on Founding Free — unlimited students &amp; courses, no expiry. Paid plans aren't active yet; when they arrive, founding institutes keep free access.</div>
-      <div id="planList"></div>
-      <div style="margin-top:10px"><button class="navlink" onclick="wlGoPricing()">Compare all plans →</button></div>
     </div>
 
     <div class="card">
@@ -565,7 +484,7 @@ function expired(){return CUR.plan==='trial'&&daysLeft()<=0||CUR.status==='expir
 function renderTrial(){
   var b=$('trialBar'),d=daysLeft();
   if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Trial over. Contact AURISI (ntc05448@gmail.com) to activate your plan and restore your app.'}
-  else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎉 Founding Free — unlimited students & courses, no expiry. Enjoy!'}
+  else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎉 Free — unlimited students & courses, no expiry. Enjoy!'}
   else if(CUR.plan!=='trial'){var pd=daysLeft();b.className=pd<=0?'trial bad':'trial ok';b.textContent=pd>0?'✅ '+CUR.plan.toUpperCase()+' plan active — '+pd+' day'+(pd===1?'':'s')+' left.':'⛔ Your plan has expired — pick a plan below and renew.'}
   else if(d<=3){b.className='trial warn';b.textContent='⏳ Trial: '+d+' day'+(d===1?'':'s')+' left. Contact AURISI to keep your app running.'}
   else{b.className='trial ok';b.textContent='🎁 Free trial: '+d+' days left — full access, no limits.'}
@@ -676,7 +595,7 @@ function renderPlans(){
     h+='<button class="btn sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>';
   });
   h+='<div class="hint" style="margin-top:6px">You are on Founding Free — unlimited, no expiry. Paid plans arrive later; founding institutes keep free access.</div>';
-  $('planList').innerHTML=h;
+  var _pl=$('planList');if(_pl)_pl.innerHTML=h;
 }
 function openPay(id){
   var x=PLANS.filter(function(p){return p.id===id})[0];if(!x)return;
@@ -727,17 +646,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
 /* ===== v2.2 screen router ===== */
 function wlScreen(name){
-  var map={landing:'landingView',pricing:'pricingView',auth:'authView',dash:'dashView'};
+  var map={landing:'landingView',auth:'authView',dash:'dashView'};
   for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
     if(el)el.classList.toggle('on',k===name);}
   try{window.scrollTo(0,0)}catch(e){}
 }
-function wlGoPricing(){wlScreen('pricing')}
 function wlGoAuth(tab){if(tab)showTab(tab);wlScreen('auth')}
-function wlPickPlan(id){
-  if(CUR){wlScreen('dash');setTimeout(function(){openPay(id)},220)}
-  else{showTab(1);wlScreen('auth');toast('Create your account first — then choose your plan.')}
-}
 
 initColors();
 tryRestore().then(function(ok){if(ok)enterDash()});
