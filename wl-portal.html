@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.7 NO VENDOR NAME — fully neutral portal -->
+<!-- wl-portal v2.8 CLEAN HERO — phone mockup removed, centered landing -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -37,15 +37,15 @@ input::placeholder{color:var(--mut2)}
 .tlink{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;transition:.15s}
 .tlink:hover{color:var(--ink);background:rgba(255,255,255,.04)}
 /* hero */
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;margin-bottom:88px}
-@media(max-width:860px){.hero{grid-template-columns:1fr;gap:44px;margin-bottom:64px}}
+.hero{max-width:800px;margin:0 auto 30px;text-align:center}
+.sub{margin-left:auto;margin-right:auto}
 .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--mut);border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 12px;border-radius:999px;margin-bottom:22px}
 .eyebrow i{width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block}
 h1{font-size:clamp(34px,4.6vw,50px);line-height:1.06;letter-spacing:-.035em;font-weight:600;color:#fff}
 h1 em{font-style:normal;color:var(--acc)}
 .sub{color:var(--mut);font-size:16.5px;line-height:1.62;margin:20px 0 30px;max-width:540px}
-.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
-.stats{display:flex;gap:0;border-top:1px solid var(--line);padding-top:22px;flex-wrap:wrap}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px;justify-content:center}
+.stats{display:flex;gap:0;justify-content:center;border-top:1px solid var(--line);padding-top:22px;flex-wrap:wrap}
 .stat{padding-right:26px;margin-right:26px;border-right:1px solid var(--line)}
 .stat:last-child{border-right:none;margin-right:0;padding-right:0}
 .stat b{display:block;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#fff}
@@ -59,19 +59,6 @@ h1 em{font-style:normal;color:var(--acc)}
 .btn.sm{padding:8px 13px;font-size:13px;border-radius:9px}
 .btn.wide{width:100%}
 /* phone */
-.phone{width:250px;margin:0 auto;background:linear-gradient(180deg,#12151c,#0c0e13);border:1px solid var(--line2);border-radius:40px;padding:10px;box-shadow:0 40px 80px -30px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.6)}
-.phone .notch{width:66px;height:4px;border-radius:99px;background:rgba(255,255,255,.14);margin:3px auto 12px}
-.pscreen{background:#0a0c11;border-radius:30px;padding:16px;min-height:352px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.04)}
-.pvhead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.pvdot{width:32px;height:32px;border-radius:10px;background:var(--acc);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#0b0e14}
-.pvhead b{font-size:13px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:132px;letter-spacing:-.01em}
-.pvhead span{font-size:10.5px;color:var(--mut2)}
-.pvcard{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;position:relative}
-.pvcard b{font-size:12px;font-weight:600;display:block;letter-spacing:-.01em}
-.pvcard span{font-size:10.5px;color:var(--mut2);display:block;margin-top:3px}
-.pvchip{position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:99px;background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent)}
-.pvring{display:none}
-.pvlink{font-size:11px;color:var(--mut);background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-top:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* sections */
 .sec-title{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut2);font-weight:600;margin-bottom:26px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:88px}
@@ -195,20 +182,6 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
           <div class="stat"><b>100%</b><span>Your revenue</span></div>
         </div>
       </div>
-      <div class="phone">
-        <div class="notch"></div>
-        <div class="pscreen">
-          <div id="pvRing" style="display:none"></div>
-          <div class="pvhead">
-            <div class="pvdot" id="pvDot">Y</div>
-            <div><b id="pvName">Your Institute</b><span id="pvTag">Your classes · your exams</span></div>
-          </div>
-          <div class="pvcard"><span class="pvchip" id="pvChip">NEW</span><b>AI Lesson — today's topic</b><span>Live teaching · slides · instant doubts</span></div>
-          <div class="pvcard"><b>Mock Test Center</b><span>Unlimited papers, instant scoring</span></div>
-          <div class="pvcard"><b>Your own material</b><span>Notes &amp; videos, only your students</span></div>
-          <div class="pvlink" id="pvLink">@your-institute</div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -287,7 +260,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Your brand · your students · your revenue · <span style="opacity:.45">build 2.7</span></div>
+    <div class="foot">Your brand · your students · your revenue · <span style="opacity:.45">build 2.8</span></div>
   </div>
 </div>
 
@@ -621,6 +594,7 @@ async function submitPay(){
 /* ===== v2.0 premium: live app preview + landing toggle ===== */
 function wlSlugPreview(n){return String(n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,22)||'your-institute'}
 function wlPreview(){
+  if(!$('pvName'))return;
   var n=($('suName')&&$('suName').value)||'';
   var el=$('pvName');if(el)el.textContent=(n.trim()||'Your Institute');
   var l=$('pvLink');if(l)l.textContent='@'+wlSlugPreview(n);
