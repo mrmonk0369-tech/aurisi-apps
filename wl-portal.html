@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.3 FREEMIUM PREMIUM — Institute Studio -->
+<!-- wl-portal v2.4 JIO LAUNCH MODE — free & unlimited first -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -180,7 +180,8 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .planbox .pp{font-size:24px;font-weight:600;letter-spacing:-.03em;margin:14px 0 2px}
 .planbox .pp small{font-size:12px;color:var(--mut2);font-weight:500;letter-spacing:0}
 .planbox .pgo{margin-top:auto}
-.planbox.hot{border-color:color-mix(in srgb,var(--acc) 45%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent)}
+.planbox.hot{border-color:color-mix(in srgb,var(--acc) 45%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent);background-image:linear-gradient(180deg,color-mix(in srgb,var(--acc) 7%,transparent),transparent 70%)}
+.planbox .pn .soon-tag{font-size:9.5px;color:var(--mut2);border:1px solid var(--line);padding:2px 7px;border-radius:99px;margin-left:7px;vertical-align:middle;font-weight:600;letter-spacing:.05em}
 .planbox .pop{position:absolute;top:-9px;right:16px;font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);background:color-mix(in srgb,var(--acc) 12%,transparent);padding:3px 8px;border-radius:99px}
 .pfeat{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);line-height:1.9}
 .pfeat b{color:#b9c1cf;font-weight:600}
@@ -208,13 +209,13 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div>
         <div class="eyebrow"><i></i> White-label AI teacher · live in 2 minutes</div>
         <h1>Your own <em>AI teaching app</em>, in your institute's name.</h1>
-        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell. <b>Start free forever</b> — upgrade only when your classes grow.</p>
+        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell. <b>Free &amp; unlimited right now</b> — no limits, no card, no expiry.</p>
         <div class="cta">
-          <button class="btn" onclick="wlGoAuth(1)">Start free — no card needed</button>
+          <button class="btn" onclick="wlGoAuth(1)">Create my app — free &amp; unlimited</button>
           <button class="btn ghost" onclick="wlGoPricing()">View pricing</button>
         </div>
         <div class="stats">
-          <div class="stat"><b>2 min</b><span>Setup</span></div>
+          <div class="stat"><b>Unlimited</b><span>Students</span></div>
           <div class="stat"><b>0%</b><span>Commission</span></div>
           <div class="stat"><b>100%</b><span>Your revenue</span></div>
         </div>
@@ -241,48 +242,48 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     <div class="screenbar">
       <button class="back" onclick="wlScreen('landing')">← Back</button>
       <h2>Pricing</h2>
-      <span class="sub2">Students always study free</span>
+      <span class="sub2">Everything is free right now</span>
     </div>
     <div class="plangrid">
-      <div class="planbox">
-        <span class="pop" style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#cbd3e1">START HERE</span>
-        <div class="pn">Free</div>
-        <div class="pm">Forever free · up to 30 students</div>
-        <div class="pp">₹0<small> forever</small></div>
-        <div class="pfeat"><b>Includes</b><br>Your branded app<br>1 course + AI lessons<br>Upgrade anytime</div>
-        <div class="pgo"><button class="btn ghost wide sm" onclick="wlGoAuth(1)">Start free</button></div>
+      <div class="planbox hot">
+        <span class="pop">LAUNCH MODE</span>
+        <div class="pn">Founding Free</div>
+        <div class="pm">Unlimited students &amp; courses · no expiry</div>
+        <div class="pp">₹0<small> — launch mode</small></div>
+        <div class="pfeat"><b>Everything, free</b><br>Unlimited students<br>Unlimited courses &amp; material<br>No card, no expiry</div>
+        <div class="pgo"><button class="btn wide sm" onclick="wlGoAuth(1)">Start free</button></div>
       </div>
       <div class="planbox">
         <div class="pn">Monthly</div>
         <div class="pm">Pay as you go · up to 100 students</div>
         <div class="pp">₹999<small> / 30 days</small></div>
         <div class="pfeat"><b>Includes</b><br>Your branded app<br>Your courses &amp; codes<br>Unlimited AI lessons</div>
-        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('monthly')">Choose plan</button></div>
+        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
       </div>
       <div class="planbox">
         <div class="pn">Institute Basic</div>
         <div class="pm">1 year · up to 100 students</div>
         <div class="pp">₹4,999<small> / year</small></div>
         <div class="pfeat"><b>Includes</b><br>Everything in Monthly<br>1-year validity<br>Priority support</div>
-        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('basic')">Choose plan</button></div>
+        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
       </div>
-      <div class="planbox hot">
+      <div class="planbox">
         <span class="pop">POPULAR</span>
         <div class="pn">Institute Standard</div>
         <div class="pm">1 year · up to 300 students</div>
         <div class="pp">₹9,999<small> / year</small></div>
         <div class="pfeat"><b>Includes</b><br>Everything in Basic<br>300 students<br>Setup help over phone</div>
-        <div class="pgo"><button class="btn wide sm" onclick="wlPickPlan('standard')">Choose plan</button></div>
+        <div class="pgo"><button class="btn wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
       </div>
       <div class="planbox">
         <div class="pn">Institute Pro</div>
         <div class="pm">1 year · unlimited students</div>
         <div class="pp">₹19,999<small> / year</small></div>
         <div class="pfeat"><b>Includes</b><br>Everything in Standard<br>Unlimited students<br>Custom plans &amp; chains</div>
-        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('pro')">Choose plan</button></div>
+        <div class="pgo"><button class="btn ghost wide sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>
       </div>
     </div>
-    <div class="hint" style="margin-top:22px">Start free — forever. Upgrade only when your classes grow. Large schools &amp; chains: ntc05448@gmail.com</div>
+    <div class="hint" style="margin-top:22px">Paid plans aren't active yet — we're in launch mode, everything is free and unlimited. Founding institutes keep free access. Large schools &amp; chains: ntc05448@gmail.com</div>
   </div>
 
   <!-- ============ SCREEN 3: AUTH (own screen) ============ -->
@@ -297,7 +298,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     </div>
 
     <div class="card" id="signupCard">
-      <h3>Start free — forever</h3>
+      <h3>Start free — unlimited</h3>
       <div class="frow"><label>Institute / tuition name</label><input id="suName" placeholder="e.g. Sharma Physics Classes"></div>
       <div class="f2">
         <div class="frow"><label>Owner name</label><input id="suOwner" placeholder="Your name"></div>
@@ -309,7 +310,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <button class="btn wide" onclick="doSignup()">Create my app →</button>
       <div class="err" id="suErr"></div>
-      <div class="hint">Free plan: up to 30 students &amp; 1 course. No card needed — your app link is generated instantly.</div>
+      <div class="hint">Unlimited students &amp; courses. No card, no expiry — completely free while we launch.</div>
     </div>
 
     <div class="card" id="loginCard" style="display:none">
@@ -353,7 +354,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 
     <div class="card" id="plansCard">
       <h3>Plans &amp; pricing</h3>
-      <div class="hint" style="margin-bottom:8px">You're on the Free plan (up to 30 students, 1 course) — upgrade when you grow. Pay by UPI; AURISI verifies and activates, usually within a few hours.</div>
+      <div class="hint" style="margin-bottom:8px">You're on Founding Free — unlimited students &amp; courses, no expiry. Paid plans aren't active yet; when they arrive, founding institutes keep free access.</div>
       <div id="planList"></div>
       <div style="margin-top:10px"><button class="navlink" onclick="wlGoPricing()">Compare all plans →</button></div>
     </div>
@@ -564,7 +565,7 @@ function expired(){return CUR.plan==='trial'&&daysLeft()<=0||CUR.status==='expir
 function renderTrial(){
   var b=$('trialBar'),d=daysLeft();
   if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Trial over. Contact AURISI (ntc05448@gmail.com) to activate your plan and restore your app.'}
-  else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎁 Free plan — up to 30 students & 1 course. Upgrade whenever your classes grow.'}
+  else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎉 Founding Free — unlimited students & courses, no expiry. Enjoy!'}
   else if(CUR.plan!=='trial'){var pd=daysLeft();b.className=pd<=0?'trial bad':'trial ok';b.textContent=pd>0?'✅ '+CUR.plan.toUpperCase()+' plan active — '+pd+' day'+(pd===1?'':'s')+' left.':'⛔ Your plan has expired — pick a plan below and renew.'}
   else if(d<=3){b.className='trial warn';b.textContent='⏳ Trial: '+d+' day'+(d===1?'':'s')+' left. Contact AURISI to keep your app running.'}
   else{b.className='trial ok';b.textContent='🎁 Free trial: '+d+' days left — full access, no limits.'}
@@ -672,9 +673,9 @@ function renderPlans(){
   PLANS.forEach(function(x){
     h+='<div class="frow" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">';
     h+='<div><b>'+x.name+'</b> <span class="hint">('+x.tag+' · '+x.students+' students)</span><br><span class="hint">\u20B9'+x.price.toLocaleString('en-IN')+(x.days===30?' / 30 days':' / year')+'</span></div>';
-    h+='<button class="btn sm" onclick="openPay(\''+x.id+'\')">Choose</button></div>';
+    h+='<button class="btn sm" disabled style="opacity:.45;cursor:not-allowed">Coming soon</button></div>';
   });
-  h+='<div class="hint" style="margin-top:6px">Custom plans for large schools & chains — contact ntc05448@gmail.com</div>';
+  h+='<div class="hint" style="margin-top:6px">You are on Founding Free — unlimited, no expiry. Paid plans arrive later; founding institutes keep free access.</div>';
   $('planList').innerHTML=h;
 }
 function openPay(id){
