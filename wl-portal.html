@@ -1,88 +1,221 @@
 <!DOCTYPE html>
-<!-- wl-portal v1.6 — plans + UPI payments -->
+<!-- wl-portal v2.0 PREMIUM — Institute Studio -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>My Coaching App — Owner Panel</title>
+<title>AURISI Institute Studio — Your own AI teaching app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#0b0e14;color:#e8eaf0;min-height:100vh}
-:root{--acc:#f59e0b;--acc2:rgba(245,158,11,.14);--card:#141926;--line:#232b3d;--mut:#8b94a8}
+:root{--acc:#f59e0b;--card:rgba(20,25,38,.72);--line:rgba(255,255,255,.09);--mut:#93a0b8;--ink:#eef1f7}
+html,body{min-height:100%}
+body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#070a12;color:var(--ink);overflow-x:hidden}
 input,select,button{font-family:inherit}
 button{cursor:pointer;border:none}
-input{background:#0f1420;border:1px solid var(--line);color:#e8eaf0;border-radius:10px;padding:12px 14px;width:100%;font-size:15px;outline:none}
-input:focus{border-color:var(--acc)}
-.btn{background:var(--acc);color:#111;font-weight:700;border-radius:10px;padding:12px 18px;font-size:15px}
-.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
-.btn.sm{padding:8px 14px;font-size:13px;border-radius:8px}
-.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
-/* AUTH */
-.authhead{text-align:center;padding:34px 0 8px}
-.authhead .logo{font-size:34px;font-weight:800;letter-spacing:-.5px}
-.authhead .logo b{color:var(--acc)}
-.authhead p{color:var(--mut);font-size:14px;margin-top:6px}
-.tabs{display:flex;gap:8px;margin:22px 0 16px;background:#0f1420;border:1px solid var(--line);border-radius:12px;padding:5px}
-.tabs button{flex:1;background:transparent;color:var(--mut);padding:10px;border-radius:9px;font-weight:600;font-size:14px}
-.tabs button.on{background:var(--acc);color:#111}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
-.card h3{font-size:16px;margin-bottom:14px}
-label{display:block;font-size:12px;color:var(--mut);margin:0 0 6px 4px;font-weight:600;letter-spacing:.3px}
+a{color:var(--acc);text-decoration:none}
+input{background:rgba(9,12,20,.75);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:14px 16px;width:100%;font-size:15px;outline:none;transition:.2s}
+input:focus{border-color:var(--acc);box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 18%,transparent)}
+input::placeholder{color:#5d6980}
+/* aurora backdrop */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(1200px 700px at 80% -10%,rgba(59,130,246,.16),transparent 60%),radial-gradient(900px 600px at 0% 20%,color-mix(in srgb,var(--acc) 14%,transparent),transparent 60%),#070a12}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:float 18s ease-in-out infinite}
+.b1{width:420px;height:420px;background:color-mix(in srgb,var(--acc) 55%,#7c3aed);top:-120px;left:-80px}
+.b2{width:360px;height:360px;background:#2563eb;bottom:-140px;right:-60px;animation-delay:-6s}
+.b3{width:280px;height:280px;background:#db2777;top:40%;right:18%;animation-delay:-11s;opacity:.32}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.12)}}
+.wrap{max-width:860px;margin:0 auto;padding:22px 18px 80px;position:relative}
+.fadein{animation:up .6s cubic-bezier(.2,.7,.3,1) both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* brand row */
+.brandrow{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--acc),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;color:#0b0e14;font-size:17px;box-shadow:0 8px 24px color-mix(in srgb,var(--acc) 35%,transparent)}
+.brandrow b{font-size:16px;letter-spacing:.2px}
+.brandrow span{font-size:12px;color:var(--mut)}
+.pill{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.4px;padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--mut)}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;margin-bottom:26px}
+@media(max-width:720px){.hero{grid-template-columns:1fr;gap:22px}}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;padding:8px 14px;border-radius:999px;background:color-mix(in srgb,var(--acc) 13%,transparent);border:1px solid color-mix(in srgb,var(--acc) 35%,transparent);color:var(--acc);margin-bottom:16px}
+h1{font-size:38px;line-height:1.12;letter-spacing:-1.1px;font-weight:800}
+h1 .grad{background:linear-gradient(100deg,var(--acc),#a78bfa 55%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:15.5px;line-height:1.65;margin:14px 0 20px;max-width:520px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:12px;color:#cbd5e6;background:rgba(255,255,255,.05);border:1px solid var(--line);padding:7px 12px;border-radius:999px}
+.chip b{color:#4ade80}
+/* phone mock */
+.phone{width:238px;margin:0 auto;background:linear-gradient(180deg,#151b2b,#0d111c);border:1px solid rgba(255,255,255,.13);border-radius:34px;padding:12px;box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.phone .notch{width:74px;height:5px;border-radius:99px;background:rgba(255,255,255,.18);margin:2px auto 12px}
+.pscreen{background:#0a0e18;border-radius:24px;padding:14px;min-height:330px;position:relative;overflow:hidden}
+.pvhead{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.pvdot{width:30px;height:30px;border-radius:9px;background:var(--acc);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#0b0e14}
+.pvhead b{font-size:13.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.pvhead span{font-size:10px;color:var(--mut)}
+.pvcard{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:14px;padding:11px;margin-bottom:9px;position:relative;overflow:hidden}
+.pvcard:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc)}
+.pvcard b{font-size:11.5px;display:block}
+.pvcard span{font-size:10px;color:var(--mut)}
+.pvchip{position:absolute;top:12px;right:12px;font-size:9.5px;font-weight:800;padding:4px 8px;border-radius:99px;background:var(--acc);color:#0b0e14}
+.pvring{position:absolute;width:190px;height:190px;border-radius:50%;right:-70px;bottom:-70px;opacity:.16;background:linear-gradient(135deg,var(--acc),transparent 70%)}
+.pvlink{font-size:11px;color:var(--acc);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:4px;font-family:ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 26px}
+@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:18px;transition:.25s}
+.step:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--acc) 40%,transparent)}
+.step .n{width:30px;height:30px;border-radius:10px;background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step b{font-size:14px;display:block;margin-bottom:5px}
+.step span{font-size:12.5px;color:var(--mut);line-height:1.55}
+/* cards */
+.card{background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:22px;padding:24px;margin-bottom:16px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.card h3{font-size:16.5px;margin-bottom:14px;letter-spacing:-.2px}
+label{display:block;font-size:11.5px;color:var(--mut);margin:0 0 7px 4px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
 .frow{margin-bottom:14px}
 .f2{display:flex;gap:12px}.f2>*{flex:1}
-.hint{font-size:12px;color:var(--mut);margin-top:6px}
-.colorrow{display:flex;gap:8px;flex-wrap:wrap}
-.colorrow button{width:34px;height:34px;border-radius:50%;border:2px solid transparent}
-.colorrow button.on{border-color:#fff}
-.err{color:#ff6b6b;font-size:13px;margin-top:8px;display:none}
-/* DASH */
-.topbar{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
-.topbar .av{width:44px;height:44px;border-radius:12px;background:var(--acc);color:#111;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:560px){.f2{flex-direction:column;gap:0}}
+.hint{font-size:12.5px;color:var(--mut);margin-top:8px;line-height:1.6}
+.err{color:#ff8080;font-size:13px;margin-top:10px;display:none}
+.btn{background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,#7c3aed));color:#0b0e14;font-weight:800;border-radius:14px;padding:14px 20px;font-size:15px;letter-spacing:.1px;box-shadow:0 10px 30px color-mix(in srgb,var(--acc) 30%,transparent);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px color-mix(in srgb,var(--acc) 42%,transparent)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn.sm{padding:9px 15px;font-size:13px;border-radius:11px}
+.btn.wide{width:100%}
+/* auth */
+.authwrap{max-width:520px;margin:0 auto}
+.authhead{text-align:center;padding:10px 0 4px}
+.authhead .logo{font-size:26px;font-weight:800;letter-spacing:-.6px}
+.authhead .logo b{color:var(--acc)}
+.authhead p{color:var(--mut);font-size:13.5px;margin-top:6px}
+.tabs{display:flex;gap:6px;margin:20px 0 16px;background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:16px;padding:5px}
+.tabs button{flex:1;background:transparent;color:var(--mut);padding:11px;border-radius:12px;font-weight:700;font-size:14px;transition:.2s}
+.tabs button.on{background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 65%,#7c3aed));color:#0b0e14}
+.colorrow{display:flex;gap:9px;flex-wrap:wrap}
+.colorrow button{width:36px;height:36px;border-radius:50%;border:2px solid transparent;transition:.2s}
+.colorrow button:hover{transform:scale(1.12)}
+.colorrow button.on{border-color:#fff;transform:scale(1.12);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+/* dashboard */
+.topbar{display:flex;align-items:center;gap:13px;background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:22px;padding:16px 18px;margin-bottom:14px}
+.topbar .av{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 55%,#7c3aed));color:#0b0e14;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .topbar .ti{flex:1;min-width:0}
 .topbar .ti b{font-size:17px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar .ti span{font-size:12px;color:var(--mut)}
-.trial{border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px}
-.trial.ok{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
-.trial.warn{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
-.trial.bad{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3)}
-.sharebox .url{display:flex;gap:8px;margin:10px 0}
-.sharebox .url input{flex:1;font-size:13px}
-.qr{width:150px;height:150px;background:#fff;border-radius:12px;padding:8px;display:block;margin:12px auto 0}
-.crs{background:#0f1420;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
-.crs .hd{display:flex;align-items:center;gap:12px}
-.crs .ic{width:40px;height:40px;border-radius:10px;background:var(--acc2);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px}
+.live{display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,color-mix(in srgb,var(--acc) 18%,transparent),rgba(255,255,255,.03));border:1px solid color-mix(in srgb,var(--acc) 40%,transparent);border-radius:20px;padding:16px 18px;margin-bottom:14px}
+.live .dot{width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.live b{font-size:14.5px}
+.live span{font-size:12px;color:var(--mut);display:block}
+.trial{border-radius:16px;padding:15px 18px;margin-bottom:14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
+.trial.ok{background:rgba(34,197,94,.11);color:#4ade80;border:1px solid rgba(34,197,94,.28)}
+.trial.warn{background:rgba(245,158,11,.11);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+.trial.bad{background:rgba(239,68,68,.11);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.earn{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:16px}
+@media(max-width:640px){.earn{grid-template-columns:repeat(2,1fr)}}
+.earn .box{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:17px;position:relative;overflow:hidden}
+.earn .box:after{content:'';position:absolute;right:-30px;top:-30px;width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--acc) 22%,transparent);filter:blur(18px)}
+.earn .box span{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.earn .box b{display:block;font-size:23px;margin-top:6px;letter-spacing:-.5px}
+.sharebox .url{display:flex;gap:8px;margin:12px 0}
+.sharebox .url input{flex:1;font-size:13px;font-family:ui-monospace,monospace}
+.qr{width:160px;height:160px;background:#fff;border-radius:18px;padding:9px;display:block;margin:14px auto 0;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.plan{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:11px;transition:.2s}
+.plan:hover{border-color:color-mix(in srgb,var(--acc) 45%,transparent);transform:translateX(3px)}
+.plan .nm{font-size:15px;font-weight:800}
+.plan .mt{font-size:12px;color:var(--mut);margin-top:4px}
+.plan .pr{font-size:18px;font-weight:800;color:var(--acc)}
+.plan .pr small{font-size:11px;color:var(--mut);font-weight:600}
+.crs{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.crs .hd{display:flex;align-items:center;gap:12px;cursor:pointer}
+.crs .ic{width:42px;height:42px;border-radius:13px;background:color-mix(in srgb,var(--acc) 15%,transparent);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .crs .hd b{flex:1;font-size:15px}
-.crs .hd .pr{color:var(--acc);font-weight:700}
-.crs .meta{color:var(--mut);font-size:12px;margin:10px 0 0 52px}
+.crs .hd .pr{color:var(--acc);font-weight:800}
+.crs .meta{color:var(--mut);font-size:12px;margin:10px 0 0 54px}
 .mini{display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
 .crs.open .mini{display:block}
-.vrow{display:flex;align-items:center;gap:10px;background:#141926;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
-.vrow .n{width:26px;height:26px;border-radius:8px;background:var(--acc2);color:var(--acc);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vrow{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.vrow .n{width:26px;height:26px;border-radius:9px;background:color-mix(in srgb,var(--acc) 15%,transparent);color:var(--acc);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .vrow b{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vrow button{background:transparent;color:#f87171;font-size:16px;padding:4px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line)}
-th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+td,th{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.6px}
+.tag{display:inline-block;padding:4px 11px;border-radius:99px;font-size:11px;font-weight:800}
 .tag.free{background:rgba(34,197,94,.15);color:#4ade80}
 .tag.used{background:rgba(239,68,68,.15);color:#f87171}
-.earn{display:flex;gap:12px;margin-bottom:14px}
-.earn .box{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-.earn .box span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
-.earn .box b{display:block;font-size:22px;margin-top:4px}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;opacity:0;transition:all .3s;z-index:99;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:linear-gradient(135deg,#1b2333,#131a28);border:1px solid var(--line);color:#fff;padding:14px 24px;border-radius:16px;font-size:14px;opacity:0;transition:all .35s cubic-bezier(.2,.7,.3,1);z-index:99;box-shadow:0 18px 50px rgba(0,0,0,.6);max-width:90vw;text-align:center;font-weight:600}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.pw{background:var(--acc2);color:var(--acc);text-align:center;font-size:11px;padding:8px;border-radius:0 0 16px 16px}
+.foot{text-align:center;color:#4d586e;font-size:11.5px;padding:26px 0 6px}
+.foot b{color:var(--acc)}
 </style>
 </head>
 <body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="wrap">
 
+  <div class="brandrow fadein">
+    <div class="mark">A</div>
+    <div><b>AURISI</b><br><span>Institute Studio</span></div>
+    <span class="pill">LAUNCH IN 2 MINUTES</span>
+  </div>
+
+  <!-- ============ LANDING ============ -->
+  <div id="landingView">
+    <div class="hero fadein">
+      <div>
+        <div class="badge">🚀 White-label AI teacher — no coding needed</div>
+        <h1>Your own <span class="grad">AI teaching app</span>, in your institute's name.</h1>
+        <p class="sub">Students open a link, study free, and see <b>your</b> brand — your name, your courses, your material. You keep 100% of everything you sell. No app store, no installs, no developers.</p>
+        <div class="cta">
+          <button class="btn" onclick="document.getElementById('authView').scrollIntoView({behavior:'smooth'})">Create my app — free 14 days</button>
+          <button class="btn ghost" onclick="document.getElementById('plansCard2').scrollIntoView({behavior:'smooth'})">See pricing</button>
+        </div>
+        <div class="chips">
+          <span class="chip">Students always <b>FREE</b></span>
+          <span class="chip">You keep <b>100%</b></span>
+          <span class="chip">Works on any phone</span>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="pscreen">
+          <div class="pvring" id="pvRing"></div>
+          <div class="pvhead">
+            <div class="pvdot" id="pvDot">Y</div>
+            <div><b id="pvName">Your Institute</b><span>Powered by AURISI</span></div>
+          </div>
+          <div class="pvcard"><span class="pvchip" id="pvChip">NEW</span><b>AI Lesson — Today's topic</b><span>Live teaching · slides · doubts</span></div>
+          <div class="pvcard"><b>Mock Test Center</b><span>Unlimited papers, instant score</span></div>
+          <div class="pvcard"><b>Your own material</b><span>Notes &amp; videos, only your students</span></div>
+          <div class="pvlink" id="pvLink">aurisi.app/your-institute</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><b>Create your account</b><span>Name, email, brand color. Takes 2 minutes — instant app link.</span></div>
+      <div class="step"><div class="n">2</div><b>Share your link</b><span>Your students open it, sign up, enter your code — done.</span></div>
+      <div class="step"><div class="n">3</div><b>Teach &amp; earn</b><span>Sell your courses with your own codes. You keep every rupee.</span></div>
+    </div>
+
+    <div class="card" id="plansCard2">
+      <h3>💳 Simple pricing — students always free</h3>
+      <div class="plan"><div><div class="nm">Monthly</div><div class="mt">Pay as you go · up to 100 students</div></div><div class="pr">₹999<small> / 30 days</small></div></div>
+      <div class="plan"><div><div class="nm">Institute Basic</div><div class="mt">1 year · up to 100 students</div></div><div class="pr">₹4,999<small> / year</small></div></div>
+      <div class="plan"><div><div class="nm">Institute Standard</div><div class="mt">1 year · up to 300 students</div></div><div class="pr">₹9,999<small> / year</small></div></div>
+      <div class="plan"><div><div class="nm">Institute Pro</div><div class="mt">1 year · unlimited students</div></div><div class="pr">₹19,999<small> / year</small></div></div>
+      <div class="hint">Start with a free 14-day trial — no card needed. Custom plans for large schools &amp; chains: ntc05448@gmail.com</div>
+    </div>
+  </div>
+
   <!-- ============ AUTH ============ -->
-  <div id="authView">
+  <div id="authView" class="authwrap">
     <div class="authhead">
-      <div class="logo">My<span>C</span>oach</div>
-      <p>Your own coaching app — set up in 2 minutes</p>
+      <div class="logo">My<b>Coach</b></div>
+      <p>Set up your coaching app in 2 minutes</p>
     </div>
     <div class="tabs">
       <button id="tabSignup" class="on" onclick="showTab(1)">Create account</button>
@@ -91,25 +224,25 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
 
     <div class="card" id="signupCard">
       <h3>Start your 14-day free trial</h3>
-      <div class="frow"><label>INSTITUTE / TUITION NAME</label><input id="suName" placeholder="e.g. Sharma Physics Classes"></div>
+      <div class="frow"><label>Institute / Tuition name</label><input id="suName" placeholder="e.g. Sharma Physics Classes"></div>
       <div class="f2">
-        <div class="frow"><label>OWNER NAME</label><input id="suOwner" placeholder="Your name"></div>
-        <div class="frow"><label>EMAIL</label><input id="suEmail" type="email" placeholder="you@email.com"></div>
+        <div class="frow"><label>Owner name</label><input id="suOwner" placeholder="Your name"></div>
+        <div class="frow"><label>Email</label><input id="suEmail" type="email" placeholder="you@email.com"></div>
       </div>
-      <div class="frow"><label>PASSWORD</label><input id="suPass" type="password" placeholder="Minimum 6 characters"></div>
-      <div class="frow"><label>BRAND COLOR</label>
+      <div class="frow"><label>Password</label><input id="suPass" type="password" placeholder="Minimum 6 characters"></div>
+      <div class="frow"><label>Brand color</label>
         <div class="colorrow" id="colorRow"></div>
       </div>
-      <button class="btn" style="width:100%" onclick="doSignup()">Create My App →</button>
+      <button class="btn wide" onclick="doSignup()">Create my app →</button>
       <div class="err" id="suErr"></div>
       <div class="hint">No card needed. No permission needed. Your app link is generated instantly.</div>
     </div>
 
     <div class="card" id="loginCard" style="display:none">
       <h3>Welcome back</h3>
-      <div class="frow"><label>EMAIL</label><input id="liEmail" type="email"></div>
-      <div class="frow"><label>PASSWORD</label><input id="liPass" type="password"></div>
-      <button class="btn" style="width:100%" onclick="doLogin()">Login →</button>
+      <div class="frow"><label>Email</label><input id="liEmail" type="email"></div>
+      <div class="frow"><label>Password</label><input id="liPass" type="password"></div>
+      <button class="btn wide" onclick="doLogin()">Login →</button>
       <div class="err" id="liErr"></div>
     </div>
   </div>
@@ -121,29 +254,32 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
       <div class="ti"><b id="dbName">—</b><span id="dbOwner">—</span></div>
       <button class="btn ghost sm" onclick="logout()">Logout</button>
     </div>
+
+    <div class="live">
+      <span class="dot"></span>
+      <div><b>Your app is LIVE 🎉</b><span>Share the link below — your students can join right now.</span></div>
+    </div>
+
     <div class="trial ok" id="trialBar">⏳ Loading…</div>
 
-    <div class="card" id="plansCard">
-      <h3>💳 Plans & Pricing</h3>
-      <div class="hint">Your students always study free — you hold the license. Pick a plan, pay by UPI, and AURISI verifies and activates it (usually within a few hours).</div>
-      <div id="planList" style="margin-top:12px"></div>
+    <div class="earn">
+      <div class="box"><span>Students</span><b id="stStu">0</b></div>
+      <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
+      <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
+      <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
     </div>
 
     <div class="card sharebox">
       <h3>📱 Share your app with students</h3>
       <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
-      <div class="hint">Students open this link — it looks and feels like YOUR app: your name, your color, your courses. They create their own account (email & password), enter the code you gave them, and your courses appear in THEIR account — on any phone they log in from.</div>
+      <div class="hint">Students open this link — it looks and feels like YOUR app: your name, your color, your courses. They create their own account (email &amp; password), enter the code you gave them, and your courses appear in THEIR account — on any phone they log in from.</div>
       <img class="qr" id="qrImg" alt="QR code">
     </div>
 
-    <div class="card">
-      <h3>💰 Sales (you keep 100%)</h3>
-      <div class="earn">
-        <div class="box"><span>Students</span><b id="stStu">0</b></div>
-        <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
-        <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
-        <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
-      </div>
+    <div class="card" id="plansCard">
+      <h3>💳 Plans &amp; Pricing</h3>
+      <div class="hint">Your students always study free — you hold the license. Pick a plan, pay by UPI, and AURISI verifies and activates it (usually within a few hours).</div>
+      <div id="planList" style="margin-top:12px"></div>
     </div>
 
     <div class="card">
@@ -151,25 +287,26 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
       <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics Full Course"></div>
       <div class="f2">
         <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (students pay you directly)" value="499"></div>
-        <div class="frow"><button class="btn" style="width:100%" onclick="addCourse()">+ Add course</button></div>
+        <div class="frow"><button class="btn wide" onclick="addCourse()">+ Add course</button></div>
       </div>
       <div id="courseList"></div>
     </div>
+    <div class="foot">Powered by <b>AURISI</b> · Your brand, your students, your revenue</div>
   </div>
 </div>
 
 <!-- COURSE DETAIL -->
-<div id="crsModal" style="display:none;position:fixed;inset:0;background:rgba(5,8,14,.85);z-index:50;overflow-y:auto">
+<div id="crsModal" style="display:none;position:fixed;inset:0;background:rgba(4,6,12,.88);backdrop-filter:blur(8px);z-index:50;overflow-y:auto">
   <div class="wrap" style="padding-top:30px">
     <button class="btn ghost sm" onclick="closeCrs()">← Back</button>
     <div class="card" style="margin-top:14px">
       <h3 id="cmTitle" style="font-size:19px">Course</h3>
       <div class="hint" id="cmPrice"></div>
       <div style="margin-top:16px">
-        <label>ADD VIDEO (YouTube link)</label>
+        <label>Add video (YouTube link)</label>
         <div class="frow"><input id="vTitle" placeholder="Video title — e.g. Chapter 1: Motion"></div>
         <div class="frow"><input id="vUrl" placeholder="https://youtube.com/watch?v=... or youtu.be/..."></div>
-        <button class="btn" style="width:100%" onclick="addVideo()">+ Add video</button>
+        <button class="btn wide" onclick="addVideo()">+ Add video</button>
         <div class="hint">Tip: keep your videos <b>Unlisted</b> on YouTube — only your students, inside your app, can watch them.</div>
         <div id="videoList" style="margin-top:16px"></div>
       </div>
@@ -178,7 +315,7 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
       <h3>🎟️ Access codes</h3>
       <div class="f2">
         <div class="frow"><input id="codeCount" type="number" value="10" min="1" max="100"></div>
-        <div class="frow"><button class="btn" style="width:100%" onclick="genCodes()">Generate codes</button></div>
+        <div class="frow"><button class="btn wide" onclick="genCodes()">Generate codes</button></div>
       </div>
       <div class="hint">Sell your course, take payment yourself (cash / UPI), and give the student one code. One code = one student = full course access.</div>
       <div id="codeList" style="margin-top:12px;max-height:320px;overflow-y:auto"></div>
@@ -187,18 +324,18 @@ th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
 </div>
 
 <!-- PAYMENT -->
-<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(5,8,14,.85);z-index:50;overflow-y:auto">
-  <div class="wrap" style="padding-top:30px">
+<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(4,6,12,.88);backdrop-filter:blur(8px);z-index:50;overflow-y:auto">
+  <div class="wrap" style="padding-top:30px;max-width:560px">
     <button class="btn ghost sm" onclick="closePay()">← Back</button>
     <div class="card" style="margin-top:14px">
       <h3 id="pmTitle" style="font-size:19px">Plan</h3>
       <div class="hint">1. Pay the exact amount from any UPI app (GPay, PhonePe, Paytm) to the ID below — or scan the QR.</div>
-      <div class="frow" style="font-weight:700;font-size:16px">UPI ID: <span id="pmUpi"></span></div>
+      <div class="frow" style="font-weight:800;font-size:16px;margin-top:10px">UPI ID: <span id="pmUpi"></span></div>
       <img id="pmQr" class="qr" style="display:none;margin:10px auto" alt="UPI QR">
       <div class="hint">2. Then enter your transaction / UTR number — AURISI verifies it and activates your plan.</div>
       <div class="frow"><input id="pmUtr" placeholder="Transaction / UTR number from your payment app"></div>
       <div class="err" id="pmErr"></div>
-      <div class="frow"><button class="btn" style="width:100%" onclick="submitPay()">I have paid — send request ✓</button></div>
+      <div class="frow"><button class="btn wide" onclick="submitPay()">I have paid — send request ✓</button></div>
       <div class="hint">Need help? ntc05448@gmail.com</div>
     </div>
   </div>
@@ -483,6 +620,31 @@ async function submitPay(){
     closePay();toast('Request sent! AURISI will verify your payment and activate your plan shortly.');
   }catch(e){$('pmErr').textContent='Could not send — check your internet and try again.'}
 }
+
+/* ===== v2.0 premium: live app preview + landing toggle ===== */
+function wlSlugPreview(n){return String(n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,22)||'your-institute'}
+function wlPreview(){
+  var n=($('suName')&&$('suName').value)||'';
+  var el=$('pvName');if(el)el.textContent=(n.trim()||'Your Institute');
+  var l=$('pvLink');if(l)l.textContent='aurisi.app/'+wlSlugPreview(n);
+  var d=$('pvDot');if(d)d.style.background=selColor;
+  var r=$('pvRing');if(r)r.style.background='linear-gradient(135deg,'+selColor+',transparent 70%)';
+  var c=$('pvChip');if(c){c.style.background=selColor;c.style.color='#0b0e14'}
+}
+function wlLanding(show){
+  var lv=$('landingView');if(lv)lv.style.display=show?'block':'none';
+  var av=$('authView');if(av)av.style.display=show?'block':'none';
+}
+(function(){
+  var _e=enterDash;enterDash=async function(){wlLanding(false);return _e.apply(this,arguments)};
+  var _l=logout;logout=function(){var r=_l.apply(this,arguments);wlLanding(true);return r};
+})();
+document.addEventListener('DOMContentLoaded',function(){
+  var i=$('suName');if(i)i.addEventListener('input',wlPreview);
+  var cr=$('colorRow');if(cr)cr.addEventListener('click',function(){setTimeout(wlPreview,0)});
+  wlPreview();
+});
+
 initColors();
 tryRestore().then(function(ok){if(ok)enterDash()});
 </script>
