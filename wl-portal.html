@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.1 CLEAN PREMIUM — Institute Studio -->
+<!-- wl-portal v2.2 SCREEN FLOW — Institute Studio -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -156,6 +156,36 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .foot{text-align:center;color:var(--mut2);font-size:11.5px;padding:34px 0 0}
 .foot b{color:var(--mut)}
 .pop{font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);background:color-mix(in srgb,var(--acc) 10%,transparent);padding:3px 8px;border-radius:99px;margin-left:8px}
+
+/* ===== v2.2 screen flow (no long scroll) ===== */
+.screen{display:none}
+.screen.on{display:block;animation:scr .42s cubic-bezier(.22,.61,.36,1) both}
+@keyframes scr{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+#landingView.on{display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 190px)}
+@media(max-width:860px){#landingView.on{min-height:auto;padding:8px 0 40px}}
+#authView.on{display:block;max-width:452px;margin:24px auto 40px}
+#pricingView{max-width:920px;margin:0 auto}
+.screenbar{display:flex;align-items:center;gap:12px;margin:6px 0 30px}
+.screenbar .back{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.02);transition:.15s}
+.screenbar .back:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.screenbar h2{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.screenbar .sub2{font-size:13px;color:var(--mut);margin-left:auto}
+.plangrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:900px){.plangrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.plangrid{grid-template-columns:1fr}}
+.planbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;position:relative;transition:.2s}
+.planbox:hover{border-color:var(--line2);transform:translateY(-2px)}
+.planbox .pn{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.planbox .pm{font-size:12px;color:var(--mut);margin-top:5px;min-height:32px;line-height:1.5}
+.planbox .pp{font-size:24px;font-weight:600;letter-spacing:-.03em;margin:14px 0 2px}
+.planbox .pp small{font-size:12px;color:var(--mut2);font-weight:500;letter-spacing:0}
+.planbox .pgo{margin-top:auto}
+.planbox.hot{border-color:color-mix(in srgb,var(--acc) 45%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 22%,transparent)}
+.planbox .pop{position:absolute;top:-9px;right:16px;font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);background:color-mix(in srgb,var(--acc) 12%,transparent);padding:3px 8px;border-radius:99px}
+.pfeat{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);line-height:1.9}
+.pfeat b{color:#b9c1cf;font-weight:600}
+.navlink{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;transition:.15s;background:none}
+.navlink:hover{color:var(--ink);background:rgba(255,255,255,.04)}
 </style>
 </head>
 <body>
@@ -166,21 +196,22 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     <div class="mark">A</div>
     <div class="wordmark">AURISI <span>· Institute Studio</span></div>
     <div class="right">
-      <button class="tlink" onclick="showTab(2);document.getElementById('authView').scrollIntoView({behavior:'smooth'})">Sign in</button>
-      <button class="btn sm" onclick="document.getElementById('authView').scrollIntoView({behavior:'smooth'})">Start free</button>
+      <button class="navlink" onclick="wlGoPricing()">Pricing</button>
+      <button class="navlink" onclick="wlGoAuth(2)">Sign in</button>
+      <button class="btn sm" onclick="wlGoAuth(1)">Start free</button>
     </div>
   </div>
 
-  <!-- ============ LANDING ============ -->
-  <div id="landingView">
+  <!-- ============ SCREEN 1: LANDING (fits viewport, no long scroll) ============ -->
+  <div id="landingView" class="screen on">
     <div class="hero fadein">
       <div>
         <div class="eyebrow"><i></i> White-label AI teacher · live in 2 minutes</div>
         <h1>Your own <em>AI teaching app</em>, in your institute's name.</h1>
-        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell. No app store, no installs, no developers.</p>
+        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell.</p>
         <div class="cta">
-          <button class="btn" onclick="document.getElementById('authView').scrollIntoView({behavior:'smooth'})">Create my app — free for 14 days</button>
-          <button class="btn ghost" onclick="document.getElementById('plansCard2').scrollIntoView({behavior:'smooth'})">View pricing</button>
+          <button class="btn" onclick="wlGoAuth(1)">Create my app — free for 14 days</button>
+          <button class="btn ghost" onclick="wlGoPricing()">View pricing</button>
         </div>
         <div class="stats">
           <div class="stat"><b>2 min</b><span>Setup</span></div>
@@ -203,27 +234,51 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         </div>
       </div>
     </div>
-
-    <div class="sec-title">How it works</div>
-    <div class="steps">
-      <div class="step"><div class="n">01</div><b>Create your account</b><span>Name, email, brand color. Your app link is generated instantly.</span></div>
-      <div class="step"><div class="n">02</div><b>Share your link</b><span>Students open it, sign up, enter your code — that's it.</span></div>
-      <div class="step"><div class="n">03</div><b>Teach &amp; earn</b><span>Sell your courses with your own codes. You keep every rupee.</span></div>
-    </div>
-
-    <div class="sec-title">Pricing</div>
-    <div class="card" id="plansCard2" style="padding:8px 28px">
-      <div class="plan"><div><div class="nm">Monthly</div><div class="mt">Pay as you go · up to 100 students</div></div><div class="pr">₹999<small> / 30 days</small></div></div>
-      <div class="plan"><div><div class="nm">Institute Basic</div><div class="mt">1 year · up to 100 students</div></div><div class="pr">₹4,999<small> / year</small></div></div>
-      <div class="plan"><div><div class="nm">Institute Standard<span class="pop">POPULAR</span></div><div class="mt">1 year · up to 300 students</div></div><div class="pr">₹9,999<small> / year</small></div></div>
-      <div class="plan"><div><div class="nm">Institute Pro</div><div class="mt">1 year · unlimited students</div></div><div class="pr">₹19,999<small> / year</small></div></div>
-      <div class="hint" style="padding:4px 2px 20px">Students always study free. Start with a 14-day trial — no card needed. Custom plans for large schools &amp; chains: ntc05448@gmail.com</div>
-    </div>
-    <div style="height:64px"></div>
   </div>
 
-  <!-- ============ AUTH ============ -->
-  <div id="authView" class="authwrap">
+  <!-- ============ SCREEN 2: PRICING (own screen) ============ -->
+  <div id="pricingView" class="screen">
+    <div class="screenbar">
+      <button class="back" onclick="wlScreen('landing')">← Back</button>
+      <h2>Pricing</h2>
+      <span class="sub2">Students always study free</span>
+    </div>
+    <div class="plangrid">
+      <div class="planbox">
+        <div class="pn">Monthly</div>
+        <div class="pm">Pay as you go · up to 100 students</div>
+        <div class="pp">₹999<small> / 30 days</small></div>
+        <div class="pfeat"><b>Includes</b><br>Your branded app<br>Your courses &amp; codes<br>Unlimited AI lessons</div>
+        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('monthly')">Choose plan</button></div>
+      </div>
+      <div class="planbox">
+        <div class="pn">Institute Basic</div>
+        <div class="pm">1 year · up to 100 students</div>
+        <div class="pp">₹4,999<small> / year</small></div>
+        <div class="pfeat"><b>Includes</b><br>Everything in Monthly<br>1-year validity<br>Priority support</div>
+        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('basic')">Choose plan</button></div>
+      </div>
+      <div class="planbox hot">
+        <span class="pop">POPULAR</span>
+        <div class="pn">Institute Standard</div>
+        <div class="pm">1 year · up to 300 students</div>
+        <div class="pp">₹9,999<small> / year</small></div>
+        <div class="pfeat"><b>Includes</b><br>Everything in Basic<br>300 students<br>Setup help over phone</div>
+        <div class="pgo"><button class="btn wide sm" onclick="wlPickPlan('standard')">Choose plan</button></div>
+      </div>
+      <div class="planbox">
+        <div class="pn">Institute Pro</div>
+        <div class="pm">1 year · unlimited students</div>
+        <div class="pp">₹19,999<small> / year</small></div>
+        <div class="pfeat"><b>Includes</b><br>Everything in Standard<br>Unlimited students<br>Custom plans &amp; chains</div>
+        <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('pro')">Choose plan</button></div>
+      </div>
+    </div>
+    <div class="hint" style="margin-top:22px">Start with a 14-day free trial — no card needed. Large schools &amp; chains: ntc05448@gmail.com</div>
+  </div>
+
+  <!-- ============ SCREEN 3: AUTH (own screen) ============ -->
+  <div id="authView" class="screen">
     <div class="authhead">
       <div class="logo">My<b>Coach</b></div>
       <p>Set up your coaching app in 2 minutes</p>
@@ -256,10 +311,11 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <button class="btn wide" onclick="doLogin()">Login →</button>
       <div class="err" id="liErr"></div>
     </div>
+    <div style="text-align:center;margin-top:6px"><button class="navlink" onclick="wlScreen('landing')">← Back to home</button></div>
   </div>
 
-  <!-- ============ DASHBOARD ============ -->
-  <div id="dashView" style="display:none">
+  <!-- ============ SCREEN 4: DASHBOARD (own screen) ============ -->
+  <div id="dashView" class="screen">
     <div class="topbar">
       <div class="av" id="dbAvatar">S</div>
       <div class="ti"><b id="dbName">—</b><span id="dbOwner">—</span></div>
@@ -291,6 +347,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <h3>Plans &amp; pricing</h3>
       <div class="hint" style="margin-bottom:8px">Your students always study free — you hold the license. Pick a plan, pay by UPI, and AURISI verifies and activates it (usually within a few hours).</div>
       <div id="planList"></div>
+      <div style="margin-top:10px"><button class="navlink" onclick="wlGoPricing()">Compare all plans →</button></div>
     </div>
 
     <div class="card">
@@ -647,14 +704,30 @@ function wlLanding(show){
   var av=$('authView');if(av)av.style.display=show?'block':'none';
 }
 (function(){
-  var _e=enterDash;enterDash=async function(){wlLanding(false);return _e.apply(this,arguments)};
-  var _l=logout;logout=function(){var r=_l.apply(this,arguments);wlLanding(true);return r};
+  var _e=enterDash;enterDash=async function(){var r=await _e.apply(this,arguments);wlScreen('dash');return r};
+  var _l=logout;logout=function(){var r=_l.apply(this,arguments);wlScreen('landing');return r};
 })();
 document.addEventListener('DOMContentLoaded',function(){
+  wlScreen('landing');
   var i=$('suName');if(i)i.addEventListener('input',wlPreview);
   var cr=$('colorRow');if(cr)cr.addEventListener('click',function(){setTimeout(wlPreview,0)});
   wlPreview();
 });
+
+
+/* ===== v2.2 screen router ===== */
+function wlScreen(name){
+  var map={landing:'landingView',pricing:'pricingView',auth:'authView',dash:'dashView'};
+  for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
+    if(el)el.classList.toggle('on',k===name);}
+  try{window.scrollTo(0,0)}catch(e){}
+}
+function wlGoPricing(){wlScreen('pricing')}
+function wlGoAuth(tab){if(tab)showTab(tab);wlScreen('auth')}
+function wlPickPlan(id){
+  if(CUR){wlScreen('dash');setTimeout(function(){openPay(id)},220)}
+  else{showTab(1);wlScreen('auth');toast('Create your account first — then choose your plan.')}
+}
 
 initColors();
 tryRestore().then(function(ok){if(ok)enterDash()});
