@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v3.3 SIGNUP FIX — null trial_ends (date column), clearer errors -->
+<!-- wl-portal v3.4 APP HOME — proper app dashboard after login (hero, quick actions, sections) -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -152,6 +152,32 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .screenbar .sub2{font-size:13px;color:var(--mut);margin-left:auto}
 .navlink{font-size:13.5px;color:var(--mut);padding:8px 12px;border-radius:9px;transition:.15s;background:none}
 .navlink:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+
+/* ===== v3.4 app-style dashboard ===== */
+.appbar{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.appbar .av{width:42px;height:42px;border-radius:12px;background:linear-gradient(150deg,var(--acc),color-mix(in srgb,var(--acc) 55%,#6d28d9));color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.appbar .ti{flex:1;min-width:0}
+.appbar .ti b{font-size:15.5px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.appbar .ti span{font-size:12px;color:var(--mut)}
+.apphero{display:grid;grid-template-columns:1.45fr .85fr;gap:24px;background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 16%,transparent),rgba(255,255,255,.02));border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);border-radius:20px;padding:26px;margin-bottom:14px}
+@media(max-width:700px){.apphero{grid-template-columns:1fr;gap:18px}}
+.ah-badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:#cdd6e4;border:1px solid var(--line2);background:rgba(255,255,255,.05);padding:5px 11px;border-radius:99px}
+.ah-badge .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2.4s infinite}
+.apphero h2{font-size:27px;letter-spacing:-.03em;margin:14px 0 8px;font-weight:600}
+.apphero p{color:#a8b2c2;font-size:13.5px;line-height:1.62;max-width:430px}
+.ah-actions{display:flex;gap:9px;margin:18px 0 12px;flex-wrap:wrap}
+.apphero .url{margin:0}
+.apphero .url input{font-size:12.5px;font-family:ui-monospace,Menlo,monospace}
+.ah-r{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
+.ah-r .qr{margin:0}
+.ah-qr{font-size:10.5px;color:var(--mut2);letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:760px){.qgrid{grid-template-columns:repeat(2,1fr)}}
+.q{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;transition:.18s}
+.q:hover{border-color:color-mix(in srgb,var(--acc) 40%,transparent);transform:translateY(-2px)}
+.q span{font-size:17px;line-height:1}
+.q b{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.q small{font-size:11.5px;color:var(--mut)}
 </style>
 </head>
 <body>
@@ -189,7 +215,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
   <!-- ============ SCREEN 3: AUTH (own screen) ============ -->
   <div id="authView" class="screen">
     <div class="authhead">
-      <div class="logo">My<b>Coach</b></div>
+      <div class="logo">Institute<b> Studio</b></div>
       <p>Set up your coaching app in 2 minutes</p>
     </div>
     <div class="tabs">
@@ -225,27 +251,58 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 
   <!-- ============ SCREEN 4: DASHBOARD (own screen) ============ -->
   <div id="dashView" class="screen">
-    <div class="topbar">
+    <div class="appbar">
       <div class="av" id="dbAvatar">S</div>
       <div class="ti"><b id="dbName">—</b><span id="dbOwner">—</span></div>
+      <button class="btn sm" onclick="openMyApp()">Open my app ↗</button>
       <button class="btn ghost sm" onclick="logout()">Logout</button>
     </div>
 
-    <div class="live">
-      <span class="dot"></span>
-      <div><b>Your app is live</b><span>Share the link below — your students can join right now.</span></div>
+    <div class="apphero">
+      <div class="ah-l">
+        <div class="ah-badge"><span class="dot"></span> Your app is live</div>
+        <h2 id="ahName">Your Institute</h2>
+        <p>Students open your link, sign up free, and see only your content — in your name and your colour. Share the QR with your class.</p>
+        <div class="ah-actions">
+          <button class="btn" onclick="openMyApp()">Open my app ↗</button>
+          <button class="btn ghost" onclick="copyUrl()">Copy link</button>
+        </div>
+        <div class="url"><input id="appUrl" readonly></div>
+      </div>
+      <div class="ah-r">
+        <img class="qr" id="qrImg" alt="QR code">
+        <span class="ah-qr">Scan to open</span>
+      </div>
     </div>
 
     <div class="trial ok" id="trialBar">Loading…</div>
 
-    <div class="earn">
+    <div class="qgrid">
+      <button class="q" onclick="wlJump('secCourse')"><span>➕</span><b>Add a course</b><small>Videos, price, codes</small></button>
+      <button class="q" onclick="openFirstCourse()"><span>📚</span><b>Notes &amp; tests</b><small>Open a course to add</small></button>
+      <button class="q" onclick="wlJump('secAnn')"><span>📢</span><b>Announcement</b><small>Message all students</small></button>
+      <button class="q" onclick="wlJump('secStats')"><span>📊</span><b>Your stats</b><small>Students &amp; revenue</small></button>
+    </div>
+
+    <div class="earn" id="secStats">
       <div class="box"><span>Students</span><b id="stStu">0</b></div>
       <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
       <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
       <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="secCourse">
+      <h3>📚 Your courses</h3>
+      <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics Full Course"></div>
+      <div class="f2">
+        <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (students pay you directly)" value="499"></div>
+        <div class="frow"><button class="btn wide" onclick="addCourse()">Add course</button></div>
+      </div>
+      <div class="hint">Open a course to add lectures, notes, books and tests — and to generate access codes.</div>
+      <div id="courseList" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card" id="secAnn">
       <h3>📢 Announcement for your students</h3>
       <div class="frow"><input id="anTitle" placeholder="Title — e.g. Test on Sunday 5 PM"></div>
       <div class="frow"><textarea id="anBody" placeholder="Message for your students..." style="width:100%;min-height:80px;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px;outline:none;resize:vertical;font-family:inherit"></textarea></div>
@@ -254,23 +311,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div id="anList" style="margin-top:14px"></div>
     </div>
 
-    <div class="card sharebox">
-      <h3>Share your app with students</h3>
-      <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
-      <div class="hint">Students open this link — it looks and feels like your app: your name, your color, your courses. They create their own account (email &amp; password), enter the code you gave them, and your courses appear in their account — on any phone they log in from.</div>
-      <img class="qr" id="qrImg" alt="QR code">
-    </div>
-
-    <div class="card">
-      <h3>Courses</h3>
-      <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics Full Course"></div>
-      <div class="f2">
-        <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (students pay you directly)" value="499"></div>
-        <div class="frow"><button class="btn wide" onclick="addCourse()">Add course</button></div>
-      </div>
-      <div id="courseList"></div>
-    </div>
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.3</span></div>
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.4</span></div>
   </div>
 </div>
 
@@ -472,6 +513,7 @@ async function enterDash(){
   var url=APP_BASE+'?i='+CUR.slug;
   $('appUrl').value=url;
   $('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(url);
+  if($('ahName'))$('ahName').textContent=CUR.name;
   renderTrial();renderPlans();loadAnns();
   await loadCourses();renderStats();
 }
@@ -598,6 +640,11 @@ async function delMat(id){
   await sb('wl_materials?id=eq.'+id,{method:'DELETE'});
   toast('Removed');loadMats();
 }
+function openMyApp(){
+  try{window.open(APP_BASE+'?i='+CUR.slug,'_blank')}catch(e){location.href=APP_BASE+'?i='+CUR.slug}
+}
+function wlJump(id){var el=$(id);if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function openFirstCourse(){if(CRS&&CRS.length)openCrs(CRS[0].id);else wlJump('secCourse')}
 async function loadAnns(){
   var el=$('anList');if(!el)return;
   try{
