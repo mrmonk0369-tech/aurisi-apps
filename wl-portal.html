@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v3.0 BRAND ATTRIBUTION — "by AURISI" credit, institute keeps the app -->
+<!-- wl-portal v3.1 REAL STUDY APP — notes/books/tests material manager -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -261,7 +261,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.0</span></div>
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.1</span></div>
   </div>
 </div>
 
@@ -281,6 +281,22 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         <div id="videoList" style="margin-top:16px"></div>
       </div>
     </div>
+    <div class="card">
+      <h3>📚 Material — notes, books &amp; tests</h3>
+      <div class="frow"><input id="mTitle" placeholder="Title — e.g. Chapter 3 Notes / Physics Book / Weekly Test 1"></div>
+      <div class="frow"><select id="mKind" onchange="matKindChange()" style="width:100%;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14.5px;outline:none">
+        <option value="note">📝 Note — type or paste</option>
+        <option value="link">🔗 Link — Drive, website</option>
+        <option value="file">📄 File upload — PDF, image</option>
+        <option value="test">🧪 Test — MCQ questions</option>
+      </select></div>
+      <div class="frow" id="mBodyWrap"><textarea id="mBody" placeholder="Type or paste your notes..." style="width:100%;min-height:110px;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px;outline:none;resize:vertical;font-family:inherit"></textarea></div>
+      <div class="frow" id="mFileWrap" style="display:none"><input id="mFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.txt"></div>
+      <button class="btn wide" onclick="addMaterial()">Add material</button>
+      <div class="hint">Test format — one question per line: <b>Question | option1 | option2 | option3 | option4 | 2</b> (last number = correct option 1-4).</div>
+      <div id="mList" style="margin-top:14px"></div>
+    </div>
+
     <div class="card">
       <h3>Access codes</h3>
       <div class="f2">
@@ -488,7 +504,8 @@ async function loadMeta(c){
   var vs=await sb('wl_videos?course_id=eq.'+c.id+'&order=pos.asc,id.asc&select=*')||[];
   var cs=await sb('wl_codes?course_id=eq.'+c.id+'&select=id,used_by')||[];
   var used=cs.filter(function(x){return x.used_by}).length;
-  var m=$('meta'+c.id);if(m)m.textContent=vs.length+' video'+(vs.length===1?'':'s')+' · '+used+' sold · '+(cs.length-used)+' codes left';
+  var ms=await sb('wl_materials?course_id=eq.'+c.id+'&select=id')||[];
+  var m=$('meta'+c.id);if(m)m.textContent=vs.length+' video'+(vs.length===1?'':'s')+' · '+ms.length+' material'+(ms.length===1?'':'s')+' · '+used+' sold · '+(cs.length-used)+' codes left';
   var mm=$('mini'+c.id);
   if(mm){
     mm.innerHTML='<table><tr><th>#</th><th>Video</th><th></th></tr>'+vs.map(function(v,i){
@@ -508,7 +525,7 @@ function openCrs(id){
   $('cmTitle').textContent=selCrs.title;
   $('cmPrice').textContent='Course price: ₹'+(Number(selCrs.price)||0)+' — you collect this directly from students';
   $('crsModal').style.display='block';
-  loadCodes();
+  loadCodes();loadMats();
 }
 function closeCrs(){$('crsModal').style.display='none'}
 function ytId(u){
@@ -528,6 +545,49 @@ async function addVideo(){
 async function delVideo(vid,cid){
   await sb('wl_videos?id=eq.'+vid,{method:'DELETE'});
   toast('Video removed');loadCourses();
+}
+var MATS=[];
+function matKindChange(){
+  var k=$('mKind').value;
+  $('mBodyWrap').style.display=(k==='file')?'none':'block';
+  $('mFileWrap').style.display=(k==='file')?'block':'none';
+  $('mBody').placeholder = k==='link'?'Paste the link (https://...)':(k==='test'?'Question | option1 | option2 | option3 | option4 | correct number':'Type or paste your notes...');
+}
+async function loadMats(){
+  var el=$('mList');
+  try{
+    MATS=await sb('wl_materials?course_id=eq.'+selCrs.id+'&order=pos.asc,id.asc&select=*')||[];
+    if(!MATS.length){el.innerHTML='<div class="hint">No material yet — add notes, a book, a link or a test above.</div>';return}
+    var ic={note:'📝',link:'🔗',file:'📄',test:'🧪'};
+    el.innerHTML=MATS.map(function(m){
+      return '<div class="vrow"><div class="n">'+(ic[m.kind]||'📄')+'</div><b>'+esc(m.title)+'</b><button onclick="delMat('+m.id+')">✕</button></div>';
+    }).join('');
+  }catch(e){el.innerHTML='<div class="hint">Could not load material.</div>'}
+}
+async function addMaterial(){
+  var t=$('mTitle').value.trim(),k=$('mKind').value,b=$('mBody').value.trim();
+  if(t.length<2)return toast('Enter a title');
+  try{
+    if(k==='file'){
+      var f=$('mFile').files[0];
+      if(!f)return toast('Choose a file first');
+      if(f.size>15*1024*1024)return toast('File too big — keep it under 15 MB');
+      var path=CUR.slug+'/'+Date.now()+'-'+String(f.name).replace(/[^A-Za-z0-9._-]/g,'_');
+      var up=await fetch(SB.replace('/rest/v1/','/storage/v1/object/wl-material/')+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':f.type||'application/octet-stream'},body:f});
+      if(!up.ok)throw new Error('upload failed');
+      var url=SB.replace('/rest/v1/','/storage/v1/object/public/wl-material/')+path;
+      await sb('wl_materials',{method:'POST',body:JSON.stringify({course_id:selCrs.id,inst_slug:CUR.slug,kind:'file',title:t,body:url,file_path:path})});
+    }else{
+      if(!b)return toast(k==='link'?'Paste the link':'Enter the content');
+      await sb('wl_materials',{method:'POST',body:JSON.stringify({course_id:selCrs.id,inst_slug:CUR.slug,kind:k,title:t,body:b})});
+    }
+    $('mTitle').value='';$('mBody').value='';if($('mFile'))$('mFile').value='';
+    toast('Material added ✓');loadMats();loadCourses();
+  }catch(e){toast('Could not add — try again')}
+}
+async function delMat(id){
+  await sb('wl_materials?id=eq.'+id,{method:'DELETE'});
+  toast('Removed');loadMats();
 }
 async function genCodes(){
   var n=Math.min(100,Math.max(1,Number($('codeCount').value)||1));
