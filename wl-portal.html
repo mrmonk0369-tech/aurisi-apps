@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.5 FREE ONLY — no pricing, pure adoption -->
+<!-- wl-portal v2.6 WHITE-LABEL CLEAN — no vendor branding in student view -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -201,12 +201,12 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
           <div id="pvRing" style="display:none"></div>
           <div class="pvhead">
             <div class="pvdot" id="pvDot">Y</div>
-            <div><b id="pvName">Your Institute</b><span>Powered by AURISI</span></div>
+            <div><b id="pvName">Your Institute</b><span id="pvTag">Your classes · your exams</span></div>
           </div>
           <div class="pvcard"><span class="pvchip" id="pvChip">NEW</span><b>AI Lesson — today's topic</b><span>Live teaching · slides · instant doubts</span></div>
           <div class="pvcard"><b>Mock Test Center</b><span>Unlimited papers, instant scoring</span></div>
           <div class="pvcard"><b>Your own material</b><span>Notes &amp; videos, only your students</span></div>
-          <div class="pvlink" id="pvLink">aurisi.app/your-institute</div>
+          <div class="pvlink" id="pvLink">@your-institute</div>
         </div>
       </div>
     </div>
@@ -287,7 +287,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Powered by <b>AURISI</b> · Your brand, your students, your revenue</div>
+    <div class="foot">Your brand · your students · your revenue</div>
   </div>
 </div>
 
@@ -623,7 +623,7 @@ function wlSlugPreview(n){return String(n||'').toLowerCase().replace(/[^a-z0-9]+
 function wlPreview(){
   var n=($('suName')&&$('suName').value)||'';
   var el=$('pvName');if(el)el.textContent=(n.trim()||'Your Institute');
-  var l=$('pvLink');if(l)l.textContent='aurisi.app/'+wlSlugPreview(n);
+  var l=$('pvLink');if(l)l.textContent='@'+wlSlugPreview(n);
   var d=$('pvDot');if(d)d.style.background=selColor;
   var r=$('pvRing');if(r)r.style.background='linear-gradient(135deg,'+selColor+',transparent 70%)';
   var c=$('pvChip');if(c){c.style.background=selColor;c.style.color='#0b0e14'}
