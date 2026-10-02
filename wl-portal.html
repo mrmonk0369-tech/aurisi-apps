@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v3.1 REAL STUDY APP — notes/books/tests material manager -->
+<!-- wl-portal v3.2 PW-STYLE — announcements to students -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -245,6 +245,15 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
     </div>
 
+    <div class="card">
+      <h3>📢 Announcement for your students</h3>
+      <div class="frow"><input id="anTitle" placeholder="Title — e.g. Test on Sunday 5 PM"></div>
+      <div class="frow"><textarea id="anBody" placeholder="Message for your students..." style="width:100%;min-height:80px;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px;outline:none;resize:vertical;font-family:inherit"></textarea></div>
+      <button class="btn wide" onclick="postAnn()">Post announcement</button>
+      <div class="hint">Students see it on their app home screen the moment they open it.</div>
+      <div id="anList" style="margin-top:14px"></div>
+    </div>
+
     <div class="card sharebox">
       <h3>Share your app with students</h3>
       <div class="url"><input id="appUrl" readonly><button class="btn sm" onclick="copyUrl()">Copy</button></div>
@@ -261,7 +270,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.1</span></div>
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.2</span></div>
   </div>
 </div>
 
@@ -463,7 +472,7 @@ async function enterDash(){
   var url=APP_BASE+'?i='+CUR.slug;
   $('appUrl').value=url;
   $('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(url);
-  renderTrial();renderPlans();
+  renderTrial();renderPlans();loadAnns();
   await loadCourses();renderStats();
 }
 function daysLeft(){
@@ -589,6 +598,25 @@ async function delMat(id){
   await sb('wl_materials?id=eq.'+id,{method:'DELETE'});
   toast('Removed');loadMats();
 }
+async function loadAnns(){
+  var el=$('anList');if(!el)return;
+  try{
+    var an=await sb('wl_announce?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&order=created_at.desc&limit=5&select=*')||[];
+    el.innerHTML=an.length?an.map(function(x){
+      return '<div class="vrow"><div class="n">📢</div><b>'+esc(x.title)+'</b><button onclick="delAnn('+x.id+')">✕</button></div>';
+    }).join(''):'<div class="hint">No announcements yet.</div>';
+  }catch(e){el.innerHTML=''}
+}
+async function postAnn(){
+  var t=$('anTitle').value.trim(),b=$('anBody').value.trim();
+  if(t.length<2)return toast('Enter a title');
+  try{
+    await sb('wl_announce',{method:'POST',body:JSON.stringify({inst_slug:CUR.slug,title:t,body:b})});
+    $('anTitle').value='';$('anBody').value='';
+    toast('Announcement posted ✓');loadAnns();
+  }catch(e){toast('Could not post — try again')}
+}
+async function delAnn(id){await sb('wl_announce?id=eq.'+id,{method:'DELETE'});toast('Removed');loadAnns()}
 async function genCodes(){
   var n=Math.min(100,Math.max(1,Number($('codeCount').value)||1));
   var rows=[];
