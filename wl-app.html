@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- wl-app v4.0 REAL STUDY APP — videos + library + tests -->
+<!-- wl-app v5.0 PW-STYLE — progress, watched ticks, stats, announcements -->
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0e14">
 <title>App</title>
@@ -93,6 +93,20 @@ footer b{color:#8b94a8}
 .qopt.ok{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4);color:#86efac}
 .qopt.no{background:rgba(239,68,68,.13);border-color:rgba(239,68,68,.4);color:#fca5a5}
 .qbar{font-size:12px;color:var(--mut);margin-bottom:10px}
+
+/* ===== v5.0 PW-style ===== */
+.pbar{height:6px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden;margin-top:9px}
+.pbar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width .35s ease}
+.pbar.big{height:8px;margin:12px 0 4px}
+.vitem.done .n{background:rgba(34,197,94,.18);color:#4ade80}
+.ann{background:#0f1420;border:1px solid var(--line,#232b3d);border-radius:14px;padding:14px;margin-bottom:10px}
+.anh{display:flex;align-items:center;gap:8px;font-size:14px}
+.anh button{margin-left:auto;background:transparent;color:var(--mut);font-size:15px;padding:2px 6px}
+.anb{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.6}
+.hstats{display:flex;gap:10px;margin:14px 0 6px}
+.hst{flex:1;background:#0f1420;border:1px solid var(--line,#232b3d);border-radius:13px;padding:13px}
+.hst b{display:block;font-size:21px;font-weight:700;letter-spacing:-.02em}
+.hst span{font-size:11px;color:var(--mut)}
 </style>
 </head>
 <body>
@@ -139,7 +153,9 @@ footer b{color:#8b94a8}
         <span class="t"><b id="contTitle">Continue</b><span id="contSub"></span></span>
       </div>
     </div>
-    <h2 class="sec">My courses</h2>
+    <div class="hstats" id="hStats"></div>
+    <div id="annWrap"></div>
+        <h2 class="sec">My courses</h2>
     <div class="grid" id="crsGrid"></div>
     <div style="height:18px"></div>
     <div class="lockrow" onclick="openRedeem()">🎟️ <span><b>Got a new code from your teacher?</b> Tap to unlock a course</span></div>
@@ -150,6 +166,8 @@ footer b{color:#8b94a8}
     <button class="back" onclick="goHome()">← All courses</button>
     <h1 id="cTitle" style="font-size:22px;margin-top:8px"></h1>
     <p id="cMeta" style="color:var(--mut);font-size:13px;margin-top:4px"></p>
+    <div class="pbar big" id="cProg"><i id="cProgBar" style="width:0%"></i></div>
+    <button class="btn" id="cCont" style="width:auto;padding:9px 16px;font-size:13px;margin:4px 0 2px" onclick="continueCourse()">▶ Continue learning</button>
     <div class="ctabs">
       <button class="ctab on" id="tabVideos" onclick="cTab('videos')">▶ Videos</button>
       <button class="ctab" id="tabLibrary" onclick="cTab('library')">📚 Library</button>
@@ -344,6 +362,32 @@ async function redeemCode(code){
     return true;
   }catch(e){toast('Connection problem — try again');return false}
 }
+async function progKey(cid){return myKey('prog')+'_'+cid}
+function getProg(cid){try{return JSON.parse(ls(progKey(cid))||'[]')}catch(e){return[]}}
+function setProg(cid,arr){ls(progKey(cid),JSON.stringify(arr))}
+function markWatched(cid,vid){var p=getProg(cid);if(p.indexOf(vid)<0){p.push(vid);setProg(cid,p)}}
+function continueCourse(){
+  var c=window.__crs;if(!c||!c.vs.length)return;
+  var pr=getProg(c.id);
+  var nx=c.vs.filter(function(v){return pr.indexOf(v.id)<0})[0]||c.vs[0];
+  playVid(c.id,nx.id,nx.yt_id,null);
+}
+async function renderAnnounce(){
+  var el=$('annWrap');if(!el)return;
+  try{
+    var an=await sb('wl_announce?inst_slug=eq.'+encodeURIComponent(INST.slug)+'&order=created_at.desc&limit=3&select=*')||[];
+    var dis=[];try{dis=JSON.parse(ls(myKey('annDis'))||'[]')}catch(e){}
+    an=an.filter(function(x){return dis.indexOf(x.id)<0});
+    if(!an.length){el.innerHTML='';return}
+    el.innerHTML=an.map(function(x){
+      return '<div class="ann"><div class="anh">📢 <b>'+esc(x.title)+'</b><button onclick="dismissAnn('+x.id+')">✕</button></div><div class="anb">'+esc(x.body||'').replace(/\n/g,'<br>')+'</div></div>';
+    }).join('');
+  }catch(e){el.innerHTML=''}
+}
+function dismissAnn(id){
+  var dis=[];try{dis=JSON.parse(ls(myKey('annDis'))||'[]')}catch(e){}
+  dis.push(id);ls(myKey('annDis'),JSON.stringify(dis));renderAnnounce();
+}
 async function renderHome(){
   $('vAuth').style.display='none';$('vCourse').style.display='none';$('vErr').style.display='none';
   $('vHome').style.display='block';$('hLogout').style.display='block';
@@ -357,12 +401,22 @@ async function renderHome(){
     openRedeem();return;
   }
   $('hiSub').textContent='Continue learning — your courses are below.';
-  mine.forEach(function(c){
+  var totW=0;
+  for(var mi=0;mi<mine.length;mi++){
+    var c=mine[mi];
+    var vs=await sb('wl_videos?course_id=eq.'+c.id+'&select=id')||[];
+    var pr=getProg(c.id);
+    var w=pr.filter(function(id){return vs.some(function(v){return v.id===id})}).length;
+    totW+=w;
+    var pct=vs.length?Math.round(w*100/vs.length):0;
     var d=document.createElement('div');d.className='crs';
-    d.innerHTML='<div class="cover">▶</div><div class="cb"><b>'+esc(c.title)+'</b><span>Tap to start learning</span></div>';
+    d.innerHTML='<div class="cover">▶</div><div class="cb"><b>'+esc(c.title)+'</b><span>'+(vs.length?w+' of '+vs.length+' lectures done':'No lectures yet')+'</span><div class="pbar"><i style="width:'+pct+'%"></i></div></div>';
     d.onclick=function(){openCourse(c.id)};
     g.appendChild(d);
-  });
+  }
+  var tk=Number(ls(myKey('tests'))||0);
+  $('hStats').innerHTML='<div class="hst"><b>'+totW+'</b><span>lectures watched</span></div><div class="hst"><b>'+tk+'</b><span>tests taken</span></div>';
+  renderAnnounce();
   var last=ls(myKey('lastVid'));
   if(last){
     var parts=String(last).split('|');
@@ -389,10 +443,16 @@ async function openCourse(cid,startVid){
   $('vCourse').style.display='block';
   $('cTitle').textContent=c.title;
   var vs=await sb('wl_videos?course_id=eq.'+cid+'&order=pos.asc,id.asc&select=*')||[];
-  $('cMeta').textContent=vs.length+' videos · '+INST.name;
+  window.__crs={id:cid,vs:vs};
+  var _pr=getProg(cid);
+  var _w=_pr.filter(function(id){return vs.some(function(v){return v.id===id})}).length;
+  var _pct=vs.length?Math.round(_w*100/vs.length):0;
+  $('cMeta').textContent=vs.length+' lectures · '+_pct+'% complete · '+INST.name;
+  if($('cProgBar'))$('cProgBar').style.width=_pct+'%';
   $('vList').innerHTML=vs.map(function(v,i){
-    return '<div class="vitem" id="vi'+v.id+'" onclick="playVid('+cid+','+v.id+',\''+esc(v.yt_id)+'\',this)">'+
-      '<div class="n">'+(i+1)+'</div><b>'+esc(v.title)+'</b></div>';
+    var _dn=_pr.indexOf(v.id)>=0;
+    return '<div class="vitem'+(_dn?' done':'')+'" id="vi'+v.id+'" onclick="playVid('+cid+','+v.id+',\''+esc(v.yt_id)+'\',this)">'+
+      '<div class="n">'+(_dn?'✓':(i+1))+'</div><b>'+esc(v.title)+'</b></div>';
   }).join('');
   cTab('videos');loadCourseExtra(cid);
   var first=startVid||(vs[0]&&vs[0].id);
@@ -401,6 +461,15 @@ async function openCourse(cid,startVid){
 }
 function playVid(cid,vid,yt,el){
   ls(myKey('lastVid'),cid+'|'+vid);
+  markWatched(cid,vid);
+  var _it=$('vi'+vid);
+  if(_it){_it.className='vitem on done';var _n=_it.querySelector('.n');if(_n)_n.textContent='✓'}
+  var _c=window.__crs;
+  if(_c&&_c.id===cid&&_c.vs.length&&$('cProgBar')){
+    var _pp=getProg(cid);
+    var _ww=_pp.filter(function(id){return _c.vs.some(function(v){return v.id===id})}).length;
+    $('cProgBar').style.width=Math.round(_ww*100/_c.vs.length)+'%';
+  }
   $('player').innerHTML='<iframe src="https://www.youtube.com/embed/'+encodeURIComponent(yt)+'?rel=0&playsinline=1" allow="accelerometer;encrypted-media;picture-in-picture" allowfullscreen></iframe>';
   var all=document.querySelectorAll('.vitem');
   for(var i=0;i<all.length;i++)all[i].className='vitem';
@@ -463,6 +532,7 @@ function ansQ(i){
   setTimeout(function(){QI++;if(QI<QZ.length)renderQ();else finishQ()},900);
 }
 function finishQ(){
+  ls(myKey('tests'),String(Number(ls(myKey('tests'))||0)+1));
   var pct=Math.round(QSCORE*100/QZ.length);
   $('qBox').innerHTML='<h3>Test complete 🎉</h3><div class="qbar">You scored '+QSCORE+' / '+QZ.length+' ('+pct+'%)</div><div style="height:12px"></div><button class="btn" onclick="startQuizAgain()">Try again</button><div style="height:8px"></div><button class="btn" style="background:transparent;color:var(--mut);padding:8px" onclick="closeQuiz()">Close</button>';
 }
