@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- wl-app v4.0 REAL STUDY APP — videos + library + tests -->
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0e14">
 <title>App</title>
@@ -76,6 +77,22 @@ footer b{color:#8b94a8}
 .cont .t span{font-size:11px;color:var(--mut)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;opacity:0;transition:all .3s;z-index:99;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== v4.0 real study app ===== */
+.ctabs{display:flex;gap:6px;margin:16px 0 14px;background:#0f1420;border:1px solid var(--line,#232b3d);border-radius:12px;padding:4px}
+.ctab{flex:1;background:transparent;color:var(--mut);padding:9px;border-radius:9px;font-weight:600;font-size:13px}
+.ctab.on{background:var(--acc);color:#0b0e14}
+.libitem{display:flex;align-items:center;gap:11px;background:#0f1420;border:1px solid var(--line,#232b3d);border-radius:13px;padding:13px;margin-bottom:9px}
+.libitem .ic{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.libitem b{flex:1;font-size:14px;font-weight:600}
+.libitem span{font-size:11px;color:var(--mut);display:block;margin-top:2px}
+.rdr{position:fixed;inset:0;background:#080b12;z-index:60;overflow-y:auto;padding:20px}
+.rdr h3{font-size:18px;margin:14px 0 10px}
+.rdr pre{white-space:pre-wrap;font-family:inherit;font-size:14.5px;line-height:1.75;color:#dfe5ef}
+.qopt{display:block;width:100%;text-align:left;background:#0f1420;border:1px solid var(--line,#232b3d);color:var(--ink);border-radius:12px;padding:13px 15px;margin-bottom:9px;font-size:14px}
+.qopt.ok{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4);color:#86efac}
+.qopt.no{background:rgba(239,68,68,.13);border-color:rgba(239,68,68,.4);color:#fca5a5}
+.qbar{font-size:12px;color:var(--mut);margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -133,8 +150,17 @@ footer b{color:#8b94a8}
     <button class="back" onclick="goHome()">← All courses</button>
     <h1 id="cTitle" style="font-size:22px;margin-top:8px"></h1>
     <p id="cMeta" style="color:var(--mut);font-size:13px;margin-top:4px"></p>
-    <div id="player"></div>
-    <div class="vlist" id="vList"></div>
+    <div class="ctabs">
+      <button class="ctab on" id="tabVideos" onclick="cTab('videos')">▶ Videos</button>
+      <button class="ctab" id="tabLibrary" onclick="cTab('library')">📚 Library</button>
+      <button class="ctab" id="tabTests" onclick="cTab('tests')">🧪 Tests</button>
+    </div>
+    <div id="cVideos">
+      <div id="player"></div>
+      <div class="vlist" id="vList"></div>
+    </div>
+    <div id="cLibrary" style="display:none"></div>
+    <div id="cTests" style="display:none"></div>
   </div>
 
   <div id="vErr" style="display:none">
@@ -368,6 +394,7 @@ async function openCourse(cid,startVid){
     return '<div class="vitem" id="vi'+v.id+'" onclick="playVid('+cid+','+v.id+',\''+esc(v.yt_id)+'\',this)">'+
       '<div class="n">'+(i+1)+'</div><b>'+esc(v.title)+'</b></div>';
   }).join('');
+  cTab('videos');loadCourseExtra(cid);
   var first=startVid||(vs[0]&&vs[0].id);
   var fv=vs.find(function(v){return v.id===first});
   if(fv)playVid(cid,fv.id,fv.yt_id,$('vi'+fv.id));
@@ -380,6 +407,67 @@ function playVid(cid,vid,yt,el){
   if(el)el.className='vitem on';
   window.scrollTo({top:0,behavior:'smooth'});
 }
+var MATS=[], QZ=[], QI=0, QSCORE=0, QANS=[];
+function cTab(name){
+  var map={videos:'cVideos',library:'cLibrary',tests:'cTests'};
+  for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
+    var tb=$('tab'+(k.charAt(0).toUpperCase()+k.slice(1)));if(tb)tb.className='ctab'+(k===name?' on':'');}
+}
+async function loadCourseExtra(cid){
+  MATS=await sb('wl_materials?course_id=eq.'+cid+'&order=pos.asc,id.asc&select=*')||[];
+  var lib=MATS.filter(function(m){return m.kind!=='test'}), tst=MATS.filter(function(m){return m.kind==='test'});
+  var ic={note:'📝',link:'🔗',file:'📄'};
+  $('cLibrary').innerHTML = lib.length ? lib.map(function(m){
+    var sub = m.kind==='link'?'Open link':(m.kind==='file'?'Open file':'Read note');
+    return '<div class="libitem" onclick="openMat('+m.id+')"><div class="ic">'+(ic[m.kind]||'📄')+'</div><div style="flex:1"><b>'+esc(m.title)+'</b><span>'+sub+'</span></div><div style="color:var(--mut)">›</div></div>';
+  }).join('') : '<div style="color:var(--mut);font-size:13px;padding:14px 0">Your teacher has not added notes yet.</div>';
+  $('cTests').innerHTML = tst.length ? tst.map(function(m){
+    var n=String(m.body||'').split('\n').filter(function(x){return x.trim()}).length;
+    return '<div class="libitem" onclick="startQuiz('+m.id+')"><div class="ic">🧪</div><div style="flex:1"><b>'+esc(m.title)+'</b><span>'+n+' questions · tap to start</span></div><div style="color:var(--mut)">›</div></div>';
+  }).join('') : '<div style="color:var(--mut);font-size:13px;padding:14px 0">No tests yet.</div>';
+}
+function openMat(id){
+  var m=MATS.filter(function(x){return x.id===id})[0];if(!m)return;
+  if(m.kind==='link'||m.kind==='file'){try{window.open(m.body,'_blank')}catch(e){location.href=m.body}return}
+  var d=document.createElement('div');d.className='rdr';d.id='reader';
+  d.innerHTML='<button class="back" onclick="closeReader()">← Back</button><h3>'+esc(m.title)+'</h3><pre>'+esc(m.body||'')+'</pre>';
+  document.body.appendChild(d);window.scrollTo(0,0);
+}
+function closeReader(){var r=$('reader');if(r)r.remove()}
+function parseQz(txt){
+  var out=[];
+  String(txt||'').split('\n').forEach(function(line){
+    var p=line.split('|').map(function(s){return s.trim()});
+    if(p.length>=6){var ci=parseInt(p[5],10);if(ci>=1&&ci<=4)out.push({q:p[0],o:[p[1],p[2],p[3],p[4]],a:ci-1})}
+  });
+  return out;
+}
+function startQuiz(id){
+  var m=MATS.filter(function(x){return x.id===id})[0];if(!m)return;
+  QZ=parseQz(m.body);if(!QZ.length){toast('This test has no questions yet');return}
+  QI=0;QSCORE=0;QANS=[];
+  var d=document.createElement('div');d.className='rdr';d.id='quiz';d.innerHTML='<div id="qBox"></div>';
+  document.body.appendChild(d);renderQ();
+}
+function renderQ(){
+  var q=QZ[QI];if(!q)return;
+  var h='<div class="qbar">Question '+(QI+1)+' of '+QZ.length+' · Score '+QSCORE+'</div><h3 style="font-size:17px;line-height:1.5">'+esc(q.q)+'</h3><div style="height:12px"></div>';
+  q.o.forEach(function(op,i){h+='<button class="qopt" onclick="ansQ('+i+')">'+String.fromCharCode(65+i)+'. '+esc(op)+'</button>'});
+  h+='<div style="height:8px"></div><button class="btn" style="background:transparent;color:var(--mut);padding:8px" onclick="closeQuiz()">Close test</button>';
+  $('qBox').innerHTML=h;
+}
+function ansQ(i){
+  var q=QZ[QI],btns=document.querySelectorAll('.qopt');
+  for(var k=0;k<btns.length;k++){btns[k].onclick=null;if(k===q.a)btns[k].className='qopt ok';}
+  if(i!==q.a){if(btns[i])btns[i].className='qopt no'}else QSCORE++;
+  setTimeout(function(){QI++;if(QI<QZ.length)renderQ();else finishQ()},900);
+}
+function finishQ(){
+  var pct=Math.round(QSCORE*100/QZ.length);
+  $('qBox').innerHTML='<h3>Test complete 🎉</h3><div class="qbar">You scored '+QSCORE+' / '+QZ.length+' ('+pct+'%)</div><div style="height:12px"></div><button class="btn" onclick="startQuizAgain()">Try again</button><div style="height:8px"></div><button class="btn" style="background:transparent;color:var(--mut);padding:8px" onclick="closeQuiz()">Close</button>';
+}
+function startQuizAgain(){var m=null;try{m=MATS.filter(function(x){return x.kind==='test'})[0]}catch(e){};closeQuiz();if(m)startQuiz(m.id)}
+function closeQuiz(){var q=$('quiz');if(q)q.remove()}
 function goHome(){renderHome()}
 boot();
 </script>
