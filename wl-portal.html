@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.6 WHITE-LABEL CLEAN — no vendor branding in student view -->
+<!-- wl-portal v2.7 NO VENDOR NAME — fully neutral portal -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>AURISI Institute Studio — Your own AI teaching app</title>
+<title>Institute Studio — Your own AI teaching app</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -171,8 +171,8 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 <div class="wrap">
 
   <div class="top fadein">
-    <div class="mark">A</div>
-    <div class="wordmark">AURISI <span>· Institute Studio</span></div>
+    <div class="mark">◆</div>
+    <div class="wordmark">Institute Studio <span>· your app, your brand</span></div>
     <div class="right">
       <button class="navlink" onclick="wlGoAuth(2)">Sign in</button>
       <button class="btn sm" onclick="wlGoAuth(1)">Start free</button>
@@ -287,7 +287,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Your brand · your students · your revenue</div>
+    <div class="foot">Your brand · your students · your revenue · <span style="opacity:.45">build 2.7</span></div>
   </div>
 </div>
 
@@ -328,7 +328,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div class="hint">1. Pay the exact amount from any UPI app (GPay, PhonePe, Paytm) to the ID below — or scan the QR.</div>
       <div class="frow" style="font-weight:600;font-size:15px;margin-top:10px">UPI ID: <span id="pmUpi"></span></div>
       <img id="pmQr" class="qr" style="display:none;margin:10px auto" alt="UPI QR">
-      <div class="hint">2. Then enter your transaction / UTR number — AURISI verifies it and activates your plan.</div>
+      <div class="hint">2. Then enter your transaction / UTR number — we verify it and activate your plan.</div>
       <div class="frow"><input id="pmUtr" placeholder="Transaction / UTR number from your payment app"></div>
       <div class="err" id="pmErr"></div>
       <div class="frow"><button class="btn wide" onclick="submitPay()">I have paid — send request</button></div>
@@ -483,10 +483,10 @@ function daysLeft(){
 function expired(){return CUR.plan==='trial'&&daysLeft()<=0||CUR.status==='expired'}
 function renderTrial(){
   var b=$('trialBar'),d=daysLeft();
-  if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Trial over. Contact AURISI (ntc05448@gmail.com) to activate your plan and restore your app.'}
+  if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Access ended. Contact us at ntc05448@gmail.com to restore your app.'}
   else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎉 Free — unlimited students & courses, no expiry. Enjoy!'}
   else if(CUR.plan!=='trial'){var pd=daysLeft();b.className=pd<=0?'trial bad':'trial ok';b.textContent=pd>0?'✅ '+CUR.plan.toUpperCase()+' plan active — '+pd+' day'+(pd===1?'':'s')+' left.':'⛔ Your plan has expired — pick a plan below and renew.'}
-  else if(d<=3){b.className='trial warn';b.textContent='⏳ Trial: '+d+' day'+(d===1?'':'s')+' left. Contact AURISI to keep your app running.'}
+  else if(d<=3){b.className='trial warn';b.textContent='⏳ '+d+' day'+(d===1?'':'s')+' left. Contact us at ntc05448@gmail.com to keep your app running.'}
   else{b.className='trial ok';b.textContent='🎁 Free trial: '+d+' days left — full access, no limits.'}
 }
 function copyUrl(){
@@ -579,7 +579,7 @@ async function renderStats(){
   $('stFree').textContent=cs.length-sold;
   $('stStu').textContent=st.length;
 }
-var UPI_ID=''; /* AURISI owner: set your UPI ID here, e.g. 'yourname@okhdfcbank' */
+var UPI_ID=''; /* owner: set your UPI ID here, e.g. 'yourname@okhdfcbank' */
 var PLANS=[
  {id:'monthly',name:'Monthly',days:30,students:'Up to 100',price:999,tag:'pay as you go'},
  {id:'basic',name:'Institute Basic',days:365,students:'Up to 100',price:4999,tag:'1 year'},
@@ -602,7 +602,7 @@ function openPay(id){
   PAY_PLAN=x;
   $('pmTitle').textContent=x.name+' — \u20B9'+x.price.toLocaleString('en-IN');
   $('pmUpi').textContent=UPI_ID||'(contact ntc05448@gmail.com for payment details)';
-  if(UPI_ID){$('pmQr').style.display='block';$('pmQr').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent('upi://pay?pa='+UPI_ID+'&pn=AURISI&am='+x.price+'&cu=INR')}
+  if(UPI_ID){$('pmQr').style.display='block';$('pmQr').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent('upi://pay?pa='+UPI_ID+'&pn=Institute&am='+x.price+'&cu=INR')}
   else{$('pmQr').style.display='none'}
   $('pmUtr').value='';$('pmErr').textContent='';
   $('payModal').style.display='block';
@@ -614,7 +614,7 @@ async function submitPay(){
   $('pmErr').textContent='';
   try{
     await sb('wl_payments',{method:'POST',body:JSON.stringify({inst_id:CUR.id,slug:CUR.slug,email:CUR.email,plan:PAY_PLAN.id,amount:PAY_PLAN.price,utr:u,status:'pending'})});
-    closePay();toast('Request sent! AURISI will verify your payment and activate your plan shortly.');
+    closePay();toast('Request sent! We will verify your payment and activate your plan shortly.');
   }catch(e){$('pmErr').textContent='Could not send — check your internet and try again.'}
 }
 
