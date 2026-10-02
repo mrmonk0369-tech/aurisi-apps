@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v2.2 SCREEN FLOW — Institute Studio -->
+<!-- wl-portal v2.3 FREEMIUM PREMIUM — Institute Studio -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,14 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--acc:#f59e0b;--bg:#08090c;--panel:#0d0f14;--panel2:#101319;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);--ink:#f2f4f7;--mut:#8a94a6;--mut2:#5d6675}
+:root{--acc:#6366f1;--bg:#06070a;--panel:#0b0d13;--panel2:#0e1117;--line:rgba(255,255,255,.065);--line2:rgba(255,255,255,.11);--ink:#f4f6fa;--mut:#8b93a5;--mut2:#5a6377}
 html,body{min-height:100%}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
 input,select,button{font-family:inherit}
 button{cursor:pointer;border:none;background:none}
 a{color:inherit;text-decoration:none}
 input{background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;width:100%;font-size:14.5px;outline:none;transition:border-color .15s,box-shadow .15s}
-input:focus{border-color:rgba(255,255,255,.28);box-shadow:0 0 0 3px rgba(255,255,255,.05)}
+input:focus{border-color:color-mix(in srgb,var(--acc) 55%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 14%,transparent)}
 input::placeholder{color:var(--mut2)}
 /* backdrop: one quiet glow + hairline grid, no clutter */
 .bg{position:fixed;inset:0;z-index:-1;background:
@@ -51,7 +51,7 @@ h1 em{font-style:normal;color:var(--acc)}
 .stat b{display:block;font-size:19px;font-weight:600;letter-spacing:-.02em;color:#fff}
 .stat span{font-size:11.5px;color:var(--mut2);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
 /* buttons: crisp, restrained */
-.btn{background:var(--acc);color:#0a0b0e;font-weight:600;border-radius:11px;padding:12px 18px;font-size:14.5px;letter-spacing:-.01em;transition:transform .12s ease,background .15s,opacity .15s;box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 6px 20px -8px color-mix(in srgb,var(--acc) 55%,transparent)}
+.btn{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 86%,#fff 14%),var(--acc));color:#fff;font-weight:600;border-radius:11px;padding:12px 18px;font-size:14.5px;letter-spacing:-.01em;transition:transform .12s ease,filter .15s,opacity .15s;box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 8px 24px -12px color-mix(in srgb,var(--acc) 70%,transparent)}
 .btn:hover{filter:brightness(1.06)}
 .btn:active{transform:scale(.985)}
 .btn.ghost{background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line2);box-shadow:none}
@@ -82,7 +82,7 @@ h1 em{font-style:normal;color:var(--acc)}
 .step b{font-size:14.5px;font-weight:600;display:block;margin-bottom:7px;letter-spacing:-.01em}
 .step span{font-size:13px;color:var(--mut);line-height:1.6}
 /* cards */
-.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:16px}
+.card{background:var(--panel);background-image:linear-gradient(180deg,rgba(255,255,255,.022),transparent 140px);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:16px}
 .card h3{font-size:15px;font-weight:600;margin-bottom:16px;letter-spacing:-.01em}
 label{display:block;font-size:11.5px;color:var(--mut);margin:0 0 7px 2px;font-weight:600;letter-spacing:.02em}
 .frow{margin-bottom:14px}
@@ -170,7 +170,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .screenbar .back:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 .screenbar h2{font-size:19px;font-weight:600;letter-spacing:-.02em}
 .screenbar .sub2{font-size:13px;color:var(--mut);margin-left:auto}
-.plangrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.plangrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px}
 @media(max-width:900px){.plangrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.plangrid{grid-template-columns:1fr}}
 .planbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;position:relative;transition:.2s}
@@ -208,9 +208,9 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <div>
         <div class="eyebrow"><i></i> White-label AI teacher · live in 2 minutes</div>
         <h1>Your own <em>AI teaching app</em>, in your institute's name.</h1>
-        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell.</p>
+        <p class="sub">Students open a link and study free — inside your brand. Your name, your courses, your material. You keep 100% of everything you sell. <b>Start free forever</b> — upgrade only when your classes grow.</p>
         <div class="cta">
-          <button class="btn" onclick="wlGoAuth(1)">Create my app — free for 14 days</button>
+          <button class="btn" onclick="wlGoAuth(1)">Start free — no card needed</button>
           <button class="btn ghost" onclick="wlGoPricing()">View pricing</button>
         </div>
         <div class="stats">
@@ -245,6 +245,14 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     </div>
     <div class="plangrid">
       <div class="planbox">
+        <span class="pop" style="border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#cbd3e1">START HERE</span>
+        <div class="pn">Free</div>
+        <div class="pm">Forever free · up to 30 students</div>
+        <div class="pp">₹0<small> forever</small></div>
+        <div class="pfeat"><b>Includes</b><br>Your branded app<br>1 course + AI lessons<br>Upgrade anytime</div>
+        <div class="pgo"><button class="btn ghost wide sm" onclick="wlGoAuth(1)">Start free</button></div>
+      </div>
+      <div class="planbox">
         <div class="pn">Monthly</div>
         <div class="pm">Pay as you go · up to 100 students</div>
         <div class="pp">₹999<small> / 30 days</small></div>
@@ -274,7 +282,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         <div class="pgo"><button class="btn ghost wide sm" onclick="wlPickPlan('pro')">Choose plan</button></div>
       </div>
     </div>
-    <div class="hint" style="margin-top:22px">Start with a 14-day free trial — no card needed. Large schools &amp; chains: ntc05448@gmail.com</div>
+    <div class="hint" style="margin-top:22px">Start free — forever. Upgrade only when your classes grow. Large schools &amp; chains: ntc05448@gmail.com</div>
   </div>
 
   <!-- ============ SCREEN 3: AUTH (own screen) ============ -->
@@ -289,7 +297,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
     </div>
 
     <div class="card" id="signupCard">
-      <h3>Start your 14-day free trial</h3>
+      <h3>Start free — forever</h3>
       <div class="frow"><label>Institute / tuition name</label><input id="suName" placeholder="e.g. Sharma Physics Classes"></div>
       <div class="f2">
         <div class="frow"><label>Owner name</label><input id="suOwner" placeholder="Your name"></div>
@@ -301,7 +309,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <button class="btn wide" onclick="doSignup()">Create my app →</button>
       <div class="err" id="suErr"></div>
-      <div class="hint">No card needed. No permission needed. Your app link is generated instantly.</div>
+      <div class="hint">Free plan: up to 30 students &amp; 1 course. No card needed — your app link is generated instantly.</div>
     </div>
 
     <div class="card" id="loginCard" style="display:none">
@@ -345,7 +353,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 
     <div class="card" id="plansCard">
       <h3>Plans &amp; pricing</h3>
-      <div class="hint" style="margin-bottom:8px">Your students always study free — you hold the license. Pick a plan, pay by UPI, and AURISI verifies and activates it (usually within a few hours).</div>
+      <div class="hint" style="margin-bottom:8px">You're on the Free plan (up to 30 students, 1 course) — upgrade when you grow. Pay by UPI; AURISI verifies and activates, usually within a few hours.</div>
       <div id="planList"></div>
       <div style="margin-top:10px"><button class="navlink" onclick="wlGoPricing()">Compare all plans →</button></div>
     </div>
@@ -508,7 +516,7 @@ async function doSignup(){
       slug=base+'-'+rand(3).toLowerCase();
     }
     var trial=new Date(Date.now()+14*86400000).toISOString().slice(0,10);
-    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'trial',trial_ends:trial,status:'active'})});
+    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'free',trial_ends:'',status:'active'})});
     if(!rows||!rows.length)throw new Error('Could not create account. Try again.');
     CUR=rows[0];save();enterDash();
   }catch(err){showErr(e,(err&&err.message)||'Signup failed. Try again.')}
@@ -556,6 +564,7 @@ function expired(){return CUR.plan==='trial'&&daysLeft()<=0||CUR.status==='expir
 function renderTrial(){
   var b=$('trialBar'),d=daysLeft();
   if(CUR.status==='expired'||(CUR.plan==='trial'&&d<=0)){b.className='trial bad';b.innerHTML='⛔ Trial over. Contact AURISI (ntc05448@gmail.com) to activate your plan and restore your app.'}
+  else if(CUR.plan==='free'){b.className='trial ok';b.textContent='🎁 Free plan — up to 30 students & 1 course. Upgrade whenever your classes grow.'}
   else if(CUR.plan!=='trial'){var pd=daysLeft();b.className=pd<=0?'trial bad':'trial ok';b.textContent=pd>0?'✅ '+CUR.plan.toUpperCase()+' plan active — '+pd+' day'+(pd===1?'':'s')+' left.':'⛔ Your plan has expired — pick a plan below and renew.'}
   else if(d<=3){b.className='trial warn';b.textContent='⏳ Trial: '+d+' day'+(d===1?'':'s')+' left. Contact AURISI to keep your app running.'}
   else{b.className='trial ok';b.textContent='🎁 Free trial: '+d+' days left — full access, no limits.'}
