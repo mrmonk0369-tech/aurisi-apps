@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v3.2 PW-STYLE — announcements to students -->
+<!-- wl-portal v3.3 SIGNUP FIX — null trial_ends (date column), clearer errors -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -270,7 +270,7 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       </div>
       <div id="courseList"></div>
     </div>
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.2</span></div>
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.3</span></div>
   </div>
 </div>
 
@@ -435,8 +435,8 @@ async function doSignup(){
       slug=base+'-'+rand(3).toLowerCase();
     }
     var trial=new Date(Date.now()+14*86400000).toISOString().slice(0,10);
-    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'free',trial_ends:'',status:'active'})});
-    if(!rows||!rows.length)throw new Error('Could not create account. Try again.');
+    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'free',trial_ends:null,status:'active'})});
+    if(!rows||!rows.length)throw new Error((rows&&rows.message)?('Server said: '+rows.message):'Could not create account. Try again.');
     CUR=rows[0];save();enterDash();
   }catch(err){showErr(e,(err&&err.message)||'Signup failed. Try again.')}
 }
