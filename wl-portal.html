@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v3.4 APP HOME — proper app dashboard after login (hero, quick actions, sections) -->
+<!-- wl-portal v4.0 APP STUDIO — pick a category (study/audio/music/video/store/anything) + app-style dashboard -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -178,6 +178,17 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
 .q span{font-size:17px;line-height:1}
 .q b{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
 .q small{font-size:11.5px;color:var(--mut)}
+
+/* ===== v4.0 App Studio ===== */
+body{padding-bottom:84px}
+.cats{display:flex;gap:8px;flex-wrap:wrap}
+.cats button{padding:9px 13px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--mut);font-size:13px;font-weight:600;transition:.15s}
+.cats button:hover{color:var(--ink);border-color:var(--line2)}
+.cats button.on{border-color:var(--acc);color:var(--acc);background:color-mix(in srgb,var(--acc) 11%,transparent)}
+.tabbar{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(9,11,16,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:9px 10px calc(9px + env(safe-area-inset-bottom));z-index:40;max-width:1080px;margin:0 auto}
+.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;color:var(--mut2);font-size:10.5px;font-weight:600;padding:6px 4px;border-radius:12px;transition:.15s}
+.tabbar button i{font-size:17px;font-style:normal;line-height:1}
+.tabbar button.on{color:var(--acc);background:color-mix(in srgb,var(--acc) 11%,transparent)}
 </style>
 </head>
 <body>
@@ -231,6 +242,9 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
         <div class="frow"><label>Email</label><input id="suEmail" type="email" placeholder="you@email.com"></div>
       </div>
       <div class="frow"><label>Password</label><input id="suPass" type="password" placeholder="Minimum 6 characters"></div>
+      <div class="frow"><label>What kind of app is this?</label>
+        <div class="cats" id="catRowSignup"></div>
+      </div>
       <div class="frow"><label>Brand color</label>
         <div class="colorrow" id="colorRow"></div>
       </div>
@@ -258,60 +272,96 @@ th{color:var(--mut2);font-size:10.5px;text-transform:uppercase;letter-spacing:.0
       <button class="btn ghost sm" onclick="logout()">Logout</button>
     </div>
 
-    <div class="apphero">
-      <div class="ah-l">
-        <div class="ah-badge"><span class="dot"></span> Your app is live</div>
-        <h2 id="ahName">Your Institute</h2>
-        <p>Students open your link, sign up free, and see only your content — in your name and your colour. Share the QR with your class.</p>
-        <div class="ah-actions">
-          <button class="btn" onclick="openMyApp()">Open my app ↗</button>
-          <button class="btn ghost" onclick="copyUrl()">Copy link</button>
+    <!-- HOME -->
+    <div class="dsec" id="dHome">
+      <div class="apphero">
+        <div class="ah-l">
+          <div class="ah-badge"><span class="dot"></span> Your app is live</div>
+          <h2 id="ahName">Your App</h2>
+          <p id="ahSub">Share your link or QR with your audience — they open it and see only your content, in your name and colour.</p>
+          <div class="ah-actions">
+            <button class="btn" onclick="openMyApp()">Open my app ↗</button>
+            <button class="btn ghost" onclick="copyUrl()">Copy link</button>
+          </div>
+          <div class="url"><input id="appUrl" readonly></div>
         </div>
-        <div class="url"><input id="appUrl" readonly></div>
+        <div class="ah-r"><img class="qr" id="qrImg" alt="QR code"><span class="ah-qr">Scan to open</span></div>
       </div>
-      <div class="ah-r">
-        <img class="qr" id="qrImg" alt="QR code">
-        <span class="ah-qr">Scan to open</span>
+
+      <div class="trial ok" id="trialBar">Loading…</div>
+
+      <div class="qgrid">
+        <button class="q" onclick="dTab('content')"><span>➕</span><b id="qAdd">Add content</b><small>Build your app</small></button>
+        <button class="q" onclick="dTab('content')"><span>📢</span><b>Announcement</b><small>Message everyone</small></button>
+        <button class="q" onclick="dTab('people')"><span>👥</span><b>Your people</b><small>Students &amp; members</small></button>
+        <button class="q" onclick="dTab('settings')"><span>⚙️</span><b>Settings</b><small>Name, colour, type</small></button>
+      </div>
+
+      <div class="earn" id="secStats">
+        <div class="box"><span id="stLbl1">Members</span><b id="stStu">0</b></div>
+        <div class="box"><span id="stLbl2">Sold</span><b id="stSold">0</b></div>
+        <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
+        <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
       </div>
     </div>
 
-    <div class="trial ok" id="trialBar">Loading…</div>
-
-    <div class="qgrid">
-      <button class="q" onclick="wlJump('secCourse')"><span>➕</span><b>Add a course</b><small>Videos, price, codes</small></button>
-      <button class="q" onclick="openFirstCourse()"><span>📚</span><b>Notes &amp; tests</b><small>Open a course to add</small></button>
-      <button class="q" onclick="wlJump('secAnn')"><span>📢</span><b>Announcement</b><small>Message all students</small></button>
-      <button class="q" onclick="wlJump('secStats')"><span>📊</span><b>Your stats</b><small>Students &amp; revenue</small></button>
-    </div>
-
-    <div class="earn" id="secStats">
-      <div class="box"><span>Students</span><b id="stStu">0</b></div>
-      <div class="box"><span>Courses sold</span><b id="stSold">0</b></div>
-      <div class="box"><span>Revenue</span><b id="stRev">₹0</b></div>
-      <div class="box"><span>Codes unused</span><b id="stFree">0</b></div>
-    </div>
-
-    <div class="card" id="secCourse">
-      <h3>📚 Your courses</h3>
-      <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics Full Course"></div>
-      <div class="f2">
-        <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (students pay you directly)" value="499"></div>
-        <div class="frow"><button class="btn wide" onclick="addCourse()">Add course</button></div>
+    <!-- CONTENT -->
+    <div class="dsec" id="dContent" style="display:none">
+      <div class="card" id="secCourse">
+        <h3 id="cHead">📚 Your courses</h3>
+        <div class="frow"><input id="newCourse" placeholder="Course name — e.g. Class 10 Physics"></div>
+        <div class="f2">
+          <div class="frow"><input id="newPrice" type="number" placeholder="Price ₹ (buyers pay you directly)" value="499"></div>
+          <div class="frow"><button class="btn wide" id="addBtn" onclick="addCourse()">Add course</button></div>
+        </div>
+        <div class="hint" id="cHint">Open a course to add lectures, notes, books and tests — and to generate access codes.</div>
+        <div id="courseList" style="margin-top:14px"></div>
       </div>
-      <div class="hint">Open a course to add lectures, notes, books and tests — and to generate access codes.</div>
-      <div id="courseList" style="margin-top:14px"></div>
+      <div class="card" id="secAnn">
+        <h3>📢 Announcement for everyone</h3>
+        <div class="frow"><input id="anTitle" placeholder="Title — e.g. Test on Sunday 5 PM"></div>
+        <div class="frow"><textarea id="anBody" placeholder="Message..." style="width:100%;min-height:80px;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px;outline:none;resize:vertical;font-family:inherit"></textarea></div>
+        <button class="btn wide" onclick="postAnn()">Post announcement</button>
+        <div id="anList" style="margin-top:14px"></div>
+      </div>
     </div>
 
-    <div class="card" id="secAnn">
-      <h3>📢 Announcement for your students</h3>
-      <div class="frow"><input id="anTitle" placeholder="Title — e.g. Test on Sunday 5 PM"></div>
-      <div class="frow"><textarea id="anBody" placeholder="Message for your students..." style="width:100%;min-height:80px;background:#0b0d12;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px;outline:none;resize:vertical;font-family:inherit"></textarea></div>
-      <button class="btn wide" onclick="postAnn()">Post announcement</button>
-      <div class="hint">Students see it on their app home screen the moment they open it.</div>
-      <div id="anList" style="margin-top:14px"></div>
+    <!-- PEOPLE -->
+    <div class="dsec" id="dPeople" style="display:none">
+      <div class="card">
+        <h3>👥 Your members</h3>
+        <div class="hint" style="margin-bottom:12px">People who signed up on your app link and unlocked your content.</div>
+        <div id="stuList"></div>
+      </div>
     </div>
 
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your students, your revenue · <span style="opacity:.45">build 3.4</span></div>
+    <!-- SETTINGS -->
+    <div class="dsec" id="dSettings" style="display:none">
+      <div class="card">
+        <h3>⚙️ App settings</h3>
+        <label>What kind of app is this?</label>
+        <div class="cats" id="catRow"></div>
+        <div class="hint" id="catHint"></div>
+        <div class="frow" style="margin-top:16px"><label>App / brand name</label><input id="setName" placeholder="Your name"></div>
+        <label>Brand colour</label>
+        <div class="colorrow" id="setColors"></div>
+        <div class="frow" style="margin-top:16px"><button class="btn wide" onclick="saveSettings()">Save changes</button></div>
+      </div>
+      <div class="card">
+        <h3>🔗 Your app link</h3>
+        <div class="url"><input id="appUrl2" readonly><button class="btn sm" onclick="copyUrl2()">Copy</button></div>
+        <div class="hint">This is what you share. Everything inside is yours.</div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="on" id="tbHome" onclick="dTab('home')"><i>🏠</i>Home</button>
+      <button id="tbContent" onclick="dTab('content')"><i>📦</i>Content</button>
+      <button id="tbPeople" onclick="dTab('people')"><i>👥</i>People</button>
+      <button id="tbSettings" onclick="dTab('settings')"><i>⚙️</i>Settings</button>
+    </div>
+
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your content · <span style="opacity:.45">build 4.0</span></div>
   </div>
 </div>
 
@@ -476,7 +526,7 @@ async function doSignup(){
       slug=base+'-'+rand(3).toLowerCase();
     }
     var trial=new Date(Date.now()+14*86400000).toISOString().slice(0,10);
-    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,plan:'free',trial_ends:null,status:'active'})});
+    var rows=await sb('wl_institutes',{method:'POST',body:JSON.stringify({slug:slug,name:name,owner_name:owner||name,email:email,pass_hash:h(pass),brand_color:selColor,category:selCat,plan:'free',trial_ends:null,status:'active'})});
     if(!rows||!rows.length)throw new Error((rows&&rows.message)?('Server said: '+rows.message):'Could not create account. Try again.');
     CUR=rows[0];save();enterDash();
   }catch(err){showErr(e,(err&&err.message)||'Signup failed. Try again.')}
@@ -514,6 +564,7 @@ async function enterDash(){
   $('appUrl').value=url;
   $('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(url);
   if($('ahName'))$('ahName').textContent=CUR.name;
+  selCat=CUR.category||'study';catChips('catRow');catChips('catRowSignup');applyCat();dTab('home');
   renderTrial();renderPlans();loadAnns();
   await loadCourses();renderStats();
 }
@@ -645,6 +696,65 @@ function openMyApp(){
 }
 function wlJump(id){var el=$(id);if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function openFirstCourse(){if(CRS&&CRS.length)openCrs(CRS[0].id);else wlJump('secCourse')}
+var CATS={
+ study:{n:'Study / Coaching',ic:'\uD83D\uDCDA',add:'Add a course',ph:'Course name \u2014 e.g. Class 10 Physics',head:'\uD83D\uDCDA Your courses',hint:'Open a course to add lectures, notes, books and tests \u2014 and to generate access codes.',cword:'course',iword:'lecture',mword:'students'},
+ audio:{n:'Audio / Podcast',ic:'\uD83C\uDFA7',add:'Add a series',ph:'Series name \u2014 e.g. Morning Motivation',head:'\uD83C\uDFA7 Your series',hint:'Open a series to add episodes and notes \u2014 and to generate access codes.',cword:'series',iword:'episode',mword:'listeners'},
+ music:{n:'Music',ic:'\uD83C\uDFB5',add:'Add an album',ph:'Album name \u2014 e.g. Chill Beats Vol 1',head:'\uD83C\uDFB5 Your albums',hint:'Open an album to add tracks \u2014 and to generate access codes.',cword:'album',iword:'track',mword:'listeners'},
+ video:{n:'Video / Shows',ic:'\uD83C\uDFAC',add:'Add a show',ph:'Show name \u2014 e.g. Study with Me',head:'\uD83C\uDFAC Your shows',hint:'Open a show to add episodes \u2014 and to generate access codes.',cword:'show',iword:'episode',mword:'viewers'},
+ store:{n:'Store / Catalog',ic:'\uD83D\uDECD\uFE0F',add:'Add a collection',ph:'Collection name \u2014 e.g. New Arrivals',head:'\uD83D\uDECD\uFE0F Your collections',hint:'Open a collection to add items \u2014 and to generate access codes.',cword:'collection',iword:'item',mword:'customers'},
+ other:{n:'Anything else',ic:'\u2728',add:'Add content',ph:'Name of your content',head:'\u2728 Your content',hint:'Open an item to add details \u2014 and to generate access codes.',cword:'item',iword:'item',mword:'members'}
+};
+var selCat='study', setColor=null;
+function catChips(host){
+  var el=$(host);if(!el)return;
+  el.innerHTML=Object.keys(CATS).map(function(k){
+    return '<button class="'+(selCat===k?'on':'')+'" onclick="pickCat(\''+k+'\',\''+host+'\')">'+CATS[k].ic+' '+CATS[k].n+'</button>';
+  }).join('');
+}
+function pickCat(k,host){selCat=k;catChips(host||'catRow');catChips('catRowSignup');applyCat()}
+function applyCat(){
+  var c=CATS[selCat]||CATS.study;
+  if($('cHead'))$('cHead').textContent=c.head;
+  if($('newCourse'))$('newCourse').placeholder=c.ph;
+  if($('addBtn'))$('addBtn').textContent=c.add;
+  if($('cHint'))$('cHint').textContent=c.hint;
+  if($('qAdd'))$('qAdd').textContent=c.add;
+  if($('catHint'))$('catHint').textContent='Your app will say \u201c'+c.cword+'\u201d, \u201c'+c.iword+'\u201d and \u201c'+c.mword+'\u201d everywhere.';
+  if($('stLbl1'))$('stLbl1').textContent=c.mword.charAt(0).toUpperCase()+c.mword.slice(1);
+}
+function dTab(name){
+  var map={home:'dHome',content:'dContent',people:'dPeople',settings:'dSettings'};
+  for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
+    var tb=$('tb'+(k.charAt(0).toUpperCase()+k.slice(1)));if(tb)tb.className=(k===name?'on':'');}
+  if(name==='people')loadStu();
+  if(name==='settings'){catChips('catRow');if($('setName'))$('setName').value=CUR.name;renderSetColors();if($('appUrl2'))$('appUrl2').value=APP_BASE+'?i='+CUR.slug}
+  try{window.scrollTo(0,0)}catch(e){}
+}
+function renderSetColors(){
+  var el=$('setColors');if(!el)return;
+  setColor=CUR.brand_color||COLORS[0];
+  el.innerHTML=COLORS.map(function(c){
+    return '<button style="background:'+c+'" class="'+(c===setColor?'on':'')+'" onclick="setColor=\''+c+'\';CUR.brand_color=setColor;document.documentElement.style.setProperty(\'--acc\',setColor);renderSetColors()"></button>';
+  }).join('');
+}
+async function saveSettings(){
+  try{
+    await sb('wl_institutes?id=eq.'+CUR.id,{method:'PATCH',body:JSON.stringify({name:$('setName').value.trim()||CUR.name,category:selCat,brand_color:CUR.brand_color||setColor})});
+    CUR.category=selCat;CUR.name=$('setName').value.trim()||CUR.name;
+    $('dbName').textContent=CUR.name;if($('ahName'))$('ahName').textContent=CUR.name;
+    applyCat();toast('Saved \u2713');
+  }catch(e){toast('Could not save \u2014 try again')}
+}
+async function loadStu(){
+  var el=$('stuList');if(!el)return;
+  try{
+    var st=await sb('wl_students?inst_slug=eq.'+encodeURIComponent(CUR.slug)+'&order=id.desc&limit=50&select=*')||[];
+    el.innerHTML=st.length?st.map(function(s){
+      return '<div class="vrow"><div class="n">'+(esc(s.name||'S').charAt(0).toUpperCase())+'</div><b>'+esc(s.name||'Member')+'<br><span style="color:var(--mut);font-size:11.5px">'+esc(s.email||'')+'</span></b></div>';
+    }).join(''):'<div class="hint">No members yet \u2014 share your app link and they\u2019ll appear here.</div>';
+  }catch(e){el.innerHTML='<div class="hint">Could not load.</div>'}
+}
+function copyUrl2(){var i=$('appUrl2');if(!i)return;i.select();try{navigator.clipboard.writeText(i.value)}catch(e){}toast('Link copied \u2713')}
 async function loadAnns(){
   var el=$('anList');if(!el)return;
   try{
