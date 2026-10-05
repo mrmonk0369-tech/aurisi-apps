@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- wl-app v6.0 CATEGORY-AWARE — labels adapt to app type (study/audio/music/video/store) -->
+<!-- wl-app v7.0 STUDY — fixed study labels, PW-style progress + library + tests -->
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0e14">
 <title>App</title>
@@ -454,7 +454,7 @@ async function openCourse(cid,startVid){
     return '<div class="vitem'+(_dn?' done':'')+'" id="vi'+v.id+'" onclick="playVid('+cid+','+v.id+',\''+esc(v.yt_id)+'\',this)">'+
       '<div class="n">'+(_dn?'✓':(i+1))+'</div><b>'+esc(v.title)+'</b></div>';
   }).join('');
-  cTab('videos');applyLabels();loadCourseExtra(cid);
+  cTab('videos');loadCourseExtra(cid);
   var first=startVid||(vs[0]&&vs[0].id);
   var fv=vs.find(function(v){return v.id===first});
   if(fv)playVid(cid,fv.id,fv.yt_id,$('vi'+fv.id));
@@ -477,13 +477,6 @@ function playVid(cid,vid,yt,el){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 var MATS=[], QZ=[], QI=0, QSCORE=0, QANS=[];
-var LBL={study:{t:'Videos',l:'Library',x:'Tests'},audio:{t:'Episodes',l:'Extras',x:'Quizzes'},music:{t:'Tracks',l:'Extras',x:'Quizzes'},video:{t:'Episodes',l:'Extras',x:'Quizzes'},store:{t:'Items',l:'Details',x:'Quizzes'},other:{t:'Content',l:'Extras',x:'Quizzes'}};
-function applyLabels(){
-  var c=(INST&&INST.category)||'study';var m=LBL[c]||LBL.study;
-  if($('tabVideos'))$('tabVideos').innerHTML='\u25B6 '+m.t;
-  if($('tabLibrary'))$('tabLibrary').innerHTML='\uD83D\uDCDA '+m.l;
-  if($('tabTests'))$('tabTests').innerHTML='\uD83E\uDDEA '+m.x;
-}
 function cTab(name){
   var map={videos:'cVideos',library:'cLibrary',tests:'cTests'};
   for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
