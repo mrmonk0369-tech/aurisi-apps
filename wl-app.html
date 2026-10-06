@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- wl-app v7.0 STUDY — fixed study labels, PW-style progress + library + tests -->
+<!-- wl-app v8.0 THEMES — follows the institute theme (dark/midnight/light) -->
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0e14">
 <title>App</title>
@@ -107,6 +107,16 @@ footer b{color:#8b94a8}
 .hst{flex:1;background:#0f1420;border:1px solid var(--line,#232b3d);border-radius:13px;padding:13px}
 .hst b{display:block;font-size:21px;font-weight:700;letter-spacing:-.02em}
 .hst span{font-size:11px;color:var(--mut)}
+
+/* ===== v8.0 themes ===== */
+html[data-theme="midnight"] body{background:#060a13;color:#e9eefb}
+html[data-theme="midnight"] .libitem,html[data-theme="midnight"] .vitem,html[data-theme="midnight"] .ann,html[data-theme="midnight"] .hst,html[data-theme="midnight"] .ctabs,html[data-theme="midnight"] .qopt,html[data-theme="midnight"] .inner,html[data-theme="midnight"] header{background:#0c121e;border-color:#1b2536}
+html[data-theme="light"] body{background:#f5f6fa;color:#0f172a}
+html[data-theme="light"] input,html[data-theme="light"] textarea{background:#fff;color:#0f172a;border-color:rgba(15,23,42,.14)}
+html[data-theme="light"] .libitem,html[data-theme="light"] .vitem,html[data-theme="light"] .ann,html[data-theme="light"] .hst,html[data-theme="light"] .ctabs,html[data-theme="light"] .qopt,html[data-theme="light"] .inner,html[data-theme="light"] header,html[data-theme="light"] .cont{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .sec,html[data-theme="light"] .qbar,html[data-theme="light"] .nm+span{color:#5b6478}
+html[data-theme="light"] .btn{color:#fff}
+html[data-theme="light"] .qopt{color:#0f172a}
 </style>
 </head>
 <body>
@@ -274,6 +284,7 @@ async function boot(){
     INST=rows[0];
   }catch(e){return fatal('📡','Connection problem','Could not reach the server. Check your internet and refresh.')}
   document.documentElement.style.setProperty('--acc',INST.brand_color||'#f59e0b');
+  applyTheme();
   document.title=INST.name;
   $('spName').textContent=INST.name;
   $('hName').textContent=INST.name;
@@ -477,6 +488,7 @@ function playVid(cid,vid,yt,el){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 var MATS=[], QZ=[], QI=0, QSCORE=0, QANS=[];
+function applyTheme(){try{document.documentElement.setAttribute('data-theme',(INST&&INST.theme)||'dark')}catch(e){}}
 function cTab(name){
   var map={videos:'cVideos',library:'cLibrary',tests:'cTests'};
   for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
