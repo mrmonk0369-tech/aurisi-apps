@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- wl-portal v5.0 STUDY ONLY — real-app polish, no categories, clean dashboard -->
+<!-- wl-portal v6.0 REAL APP SYSTEM — splash screen + themes (dark/midnight/light) -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -207,9 +207,50 @@ body{padding-bottom:96px}
 .earn .box span{text-transform:none;letter-spacing:.01em;font-size:11.5px}
 .trial.ok{background:rgba(34,197,94,.08);color:#a7e8bd;border-color:rgba(34,197,94,.22)}
 .q{padding:16px;border-radius:16px}
+
+/* ===== v6.0 splash + themes ===== */
+.splash{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--bg);transition:opacity .45s ease}
+.splash.hide{opacity:0;pointer-events:none}
+.sp-mark{width:64px;height:64px;border-radius:20px;background:linear-gradient(150deg,var(--acc),color-mix(in srgb,var(--acc) 55%,#6d28d9));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;box-shadow:0 18px 44px -14px color-mix(in srgb,var(--acc) 70%,transparent);animation:spin .9s cubic-bezier(.2,.8,.3,1) both}
+@keyframes spin{from{transform:scale(.6) rotate(-14deg);opacity:0}to{transform:none;opacity:1}}
+.sp-name{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.sp-sub{font-size:11.5px;color:var(--mut2);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.sp-bar{width:132px;height:3px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.sp-bar i{display:block;height:100%;width:40%;background:var(--acc);border-radius:99px;animation:load 1s ease-in-out infinite}
+@keyframes load{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+.themes{display:flex;gap:10px;flex-wrap:wrap}
+.themes button{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--mut);font-size:13px;font-weight:600}
+.themes button.on{border-color:var(--acc);color:var(--acc);background:color-mix(in srgb,var(--acc) 11%,transparent)}
+.themes .sw{width:16px;height:16px;border-radius:5px;border:1px solid rgba(255,255,255,.25)}
+/* THEMES */
+html[data-theme="midnight"]{--bg:#060a13;--panel:#0c121e;--panel2:#101826;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);--ink:#edf2fb;--mut:#8ea0bd;--mut2:#5d6f8c}
+html[data-theme="midnight"] .bg{background:radial-gradient(900px 480px at 50% -12%,color-mix(in srgb,var(--acc) 10%,transparent),transparent 70%),#060a13}
+html[data-theme="light"]{--bg:#f5f6fa;--panel:#ffffff;--panel2:#f1f3f8;--line:rgba(15,23,42,.10);--line2:rgba(15,23,42,.16);--ink:#0f172a;--mut:#5b6478;--mut2:#8b93a5}
+html[data-theme="light"] body{background:#f5f6fa;color:#0f172a}
+html[data-theme="light"] .bg{background:radial-gradient(900px 480px at 50% -12%,color-mix(in srgb,var(--acc) 14%,transparent),transparent 70%),#f5f6fa}
+html[data-theme="light"] .bg:after{background-image:linear-gradient(rgba(15,23,42,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,23,42,.05) 1px,transparent 1px)}
+html[data-theme="light"] .card{background:#fff;background-image:none;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select{background:#fff;color:#0f172a;border-color:rgba(15,23,42,.14)}
+html[data-theme="light"] .tabbar{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .q{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .earn .box{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .appbar{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .apphero{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 10%,#fff),#fff);border-color:color-mix(in srgb,var(--acc) 26%,transparent)}
+html[data-theme="light"] .ah-badge{background:rgba(15,23,42,.05);color:#475569;border-color:rgba(15,23,42,.12)}
+html[data-theme="light"] .ah-urlgrp{background:#f1f3f8;border-color:rgba(15,23,42,.12)}
+html[data-theme="light"] .trial.ok{background:rgba(34,197,94,.12);color:#15803d}
+html[data-theme="light"] .vrow{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .crs{background:#f7f8fc;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .foot{color:#94a0b4}
 </style>
 </head>
 <body>
+<div id="splash" class="splash">
+  <div class="sp-mark">A</div>
+  <div class="sp-name">Institute Studio</div>
+  <div class="sp-sub">by AURISI</div>
+  <div class="sp-bar"><i></i></div>
+</div>
 <div class="bg"></div>
 <div class="wrap">
 
@@ -354,6 +395,8 @@ body{padding-bottom:96px}
       <div class="card">
         <h3>⚙️ App settings</h3>
         <div class="frow"><label>Institute / brand name</label><input id="setName" placeholder="Your name"></div>
+        <label>Theme</label>
+        <div class="themes" id="themeRow"></div>
         <label>Brand colour</label>
         <div class="colorrow" id="setColors"></div>
         <div class="frow" style="margin-top:16px"><button class="btn wide" onclick="saveSettings()">Save changes</button></div>
@@ -372,7 +415,7 @@ body{padding-bottom:96px}
       <button id="tbSettings" onclick="dTab('settings')"><i>⚙️</i>Settings</button>
     </div>
 
-    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your content · <span style="opacity:.45">build 5.0</span></div>
+    <div class="foot">Institute Studio <b style="color:#8b93a5">by AURISI</b> · your brand, your content · <span style="opacity:.45">build 6.0</span></div>
   </div>
 </div>
 
@@ -575,6 +618,7 @@ async function enterDash(){
   $('appUrl').value=url;
   $('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(url);
   if($('ahName'))$('ahName').textContent=CUR.name;
+  applyTheme(CUR.theme||'dark');
   dTab('home');
   renderTrial();renderPlans();loadAnns();
   await loadCourses();renderStats();
@@ -713,7 +757,7 @@ function dTab(name){
   for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
     var tb=$('tb'+(k.charAt(0).toUpperCase()+k.slice(1)));if(tb)tb.className=(k===name?'on':'');}
   if(name==='people')loadStu();
-  if(name==='settings'){if($('setName'))$('setName').value=CUR.name;renderSetColors();if($('appUrl2'))$('appUrl2').value=APP_BASE+'?i='+CUR.slug}
+  if(name==='settings'){themeChips();if($('setName'))$('setName').value=CUR.name;renderSetColors();if($('appUrl2'))$('appUrl2').value=APP_BASE+'?i='+CUR.slug}
   try{window.scrollTo(0,0)}catch(e){}
 }
 function renderSetColors(){
@@ -725,8 +769,8 @@ function renderSetColors(){
 }
 async function saveSettings(){
   try{
-    await sb('wl_institutes?id=eq.'+CUR.id,{method:'PATCH',body:JSON.stringify({name:$('setName').value.trim()||CUR.name,brand_color:CUR.brand_color||setColor})});
-    CUR.name=$('setName').value.trim()||CUR.name;
+    await sb('wl_institutes?id=eq.'+CUR.id,{method:'PATCH',body:JSON.stringify({name:$('setName').value.trim()||CUR.name,brand_color:CUR.brand_color||setColor,theme:selTheme})});
+    CUR.name=$('setName').value.trim()||CUR.name;CUR.theme=selTheme;
     $('dbName').textContent=CUR.name;if($('ahName'))$('ahName').textContent=CUR.name;
     toast('Saved \u2713');
   }catch(e){toast('Could not save \u2014 try again')}
@@ -741,6 +785,17 @@ async function loadStu(){
   }catch(e){el.innerHTML='<div class="hint">Could not load.</div>'}
 }
 function copyUrl2(){var i=$('appUrl2');if(!i)return;i.select();try{navigator.clipboard.writeText(i.value)}catch(e){}toast('Link copied \u2713')}
+var THEMES={dark:{n:'Dark',sw:'#0b0d12'},midnight:{n:'Midnight',sw:'#0a1626'},light:{n:'Light',sw:'#ffffff'}};
+var selTheme='dark';
+function themeChips(){
+  var el=$('themeRow');if(!el)return;
+  el.innerHTML=Object.keys(THEMES).map(function(k){
+    return '<button class="'+(selTheme===k?'on':'')+'" onclick="setTheme(\''+k+'\')"><span class="sw" style="background:'+THEMES[k].sw+'"></span>'+THEMES[k].n+'</button>';
+  }).join('');
+}
+function setTheme(t){selTheme=t;document.documentElement.setAttribute('data-theme',t);themeChips()}
+function applyTheme(t){selTheme=t||'dark';document.documentElement.setAttribute('data-theme',selTheme);themeChips()}
+function splashDone(){var s=$('splash');if(s)s.className='splash hide'}
 async function loadAnns(){
   var el=$('anList');if(!el)return;
   try{
@@ -861,6 +916,8 @@ function wlScreen(name){
 function wlGoAuth(tab){if(tab)showTab(tab);wlScreen('auth')}
 
 initColors();
+applyTheme('dark');
+setTimeout(splashDone,1100);
 tryRestore().then(function(ok){if(ok)enterDash()});
 </script>
 </body>
