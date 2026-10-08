@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- wl-app v8.1 AURISI MARK — vector logo on splash + footer credit -->
+<!-- wl-app v9.0 REAL APP — bottom nav, profile screen, installable PWA -->
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0e14">
 <title>App</title>
@@ -121,6 +121,23 @@ html[data-theme="light"] .qopt{color:#0f172a}
 .amark{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px}
 .pw{display:flex;align-items:center;justify-content:center;gap:4px}
 footer{display:flex;align-items:center;justify-content:center;gap:3px}
+
+/* ===== v9.0 real app: bottom nav + profile ===== */
+body{padding-bottom:86px}
+.apptabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0a0c11;border-top:1px solid var(--line);padding:9px 8px calc(9px + env(safe-area-inset-bottom));z-index:60}
+.apptabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;color:var(--mut);font-size:10.5px;font-weight:600;padding:6px 4px;border-radius:12px}
+.apptabs button i{font-size:18px;font-style:normal;line-height:1}
+.apptabs button.on{color:var(--acc);background:rgba(255,255,255,.04)}
+.pf{padding:22px;text-align:center}
+.pf-av{width:64px;height:64px;border-radius:20px;background:var(--acc);color:#0b0e14;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.pf-nm{font-size:17px;font-weight:700;display:block}
+.pf-em{font-size:12.5px;color:var(--mut);display:block;margin-top:3px}
+.pf-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:12px 2px;font-size:13.5px;margin-top:14px}
+.pf-row span{color:var(--mut)}
+.pf-row b{font-weight:600}
+.pf-foot{text-align:center;color:var(--mut);font-size:11.5px;padding:18px 0 6px}
+html[data-theme="light"] .apptabs{background:#fff;border-color:rgba(15,23,42,.10)}
+html[data-theme="light"] .apptabs button.on{background:rgba(15,23,42,.04)}
 </style>
 </head>
 <body>
@@ -169,10 +186,23 @@ footer{display:flex;align-items:center;justify-content:center;gap:3px}
     </div>
     <div class="hstats" id="hStats"></div>
     <div id="annWrap"></div>
-        <h2 class="sec">My courses</h2>
-    <div class="grid" id="crsGrid"></div>
-    <div style="height:18px"></div>
+    <div style="height:14px"></div>
     <div class="lockrow" onclick="openRedeem()">🎟️ <span><b>Got a new code from your teacher?</b> Tap to unlock a course</span></div>
+  </div>
+
+  <!-- courses -->
+  <div id="vCourses" style="display:none">
+    <h2 class="sec">My courses</h2>
+    <div class="grid" id="crsGrid"></div>
+    <div style="height:20px"></div>
+  </div>
+
+  <!-- profile -->
+  <div id="vProfile" style="display:none">
+    <h2 class="sec">Profile</h2>
+    <div class="card pf" id="pfBody"></div>
+    <button class="btn ghost wide" onclick="doLogout()">Log out</button>
+    <div class="pf-foot">by <b>AURISI</b></div>
   </div>
 
   <!-- course -->
@@ -218,6 +248,11 @@ footer{display:flex;align-items:center;justify-content:center;gap:3px}
 </div>
 
 <footer><span class="amark"><svg viewBox="0 0 48 48" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="aga2" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#f59e0b"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="48" height="48" rx="14" fill="url(#aga2)"/><path d="M13 35 L24 13 L35 35" stroke="#fff" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 27.5 H29.5" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/></svg></span> by <b>AURISI</b></footer>
+<nav class="apptabs" id="appTabs" style="display:none">
+  <button class="on" id="tbHome" onclick="aTab('home')"><i>🏠</i>Home</button>
+  <button id="tbCourses" onclick="aTab('courses')"><i>📚</i>Courses</button>
+  <button id="tbProfile" onclick="aTab('profile')"><i>👤</i>Profile</button>
+</nav>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -286,6 +321,7 @@ async function boot(){
     var rows=await sb('wl_institutes?slug=eq.'+encodeURIComponent(s)+'&select=*');
     if(!rows||!rows.length)return fatal('🔍','App not found','No app exists for "'+s+'". Double-check the link your teacher gave you.');
     INST=rows[0];
+  try{pwaManifest()}catch(e){}
   }catch(e){return fatal('📡','Connection problem','Could not reach the server. Check your internet and refresh.')}
   document.documentElement.style.setProperty('--acc',INST.brand_color||'#f59e0b');
   applyTheme();
@@ -312,11 +348,11 @@ function hideSplash(){
   var sp=$('splash');sp.style.opacity='0';setTimeout(function(){sp.style.display='none'},420);
   if(!DEAD)route();
 }
-function fatal(em,t,b){DEAD=true;$('vAuth').style.display='none';$('vHome').style.display='none';$('vCourse').style.display='none';$('vErr').style.display='block';$('errEm').textContent=em;$('errTitle').textContent=t;$('errBody').textContent=b;var sp=$('splash');if(sp)sp.style.display='none';}
+function fatal(em,t,b){showTabs(false);DEAD=true;$('vAuth').style.display='none';$('vHome').style.display='none';$('vCourse').style.display='none';$('vErr').style.display='block';$('errEm').textContent=em;$('errTitle').textContent=t;$('errBody').textContent=b;var sp=$('splash');if(sp)sp.style.display='none';}
 function route(){
   if(STUDENT){renderHome()}else{showAuth()}
 }
-function showAuth(){
+function showAuth(){showTabs(false);
   $('vHome').style.display='none';$('vCourse').style.display='none';$('vErr').style.display='none';
   $('vAuth').style.display='block';$('hLogout').style.display='none';
 }
@@ -406,6 +442,7 @@ function dismissAnn(id){
 async function renderHome(){
   $('vAuth').style.display='none';$('vCourse').style.display='none';$('vErr').style.display='none';
   $('vHome').style.display='block';$('hLogout').style.display='block';
+  aTab('home');
   $('hiName').textContent=(STUDENT&&STUDENT.name)||'Student';
   var codes=await sb('wl_codes?inst_slug=eq.'+encodeURIComponent(INST.slug)+'&used_by=eq.'+encodeURIComponent(STUDENT.email)+'&select=course_id')||[];
   var ids=codes.map(function(c){return c.course_id});
@@ -455,6 +492,7 @@ async function openCourse(cid,startVid){
   var codes=await sb('wl_codes?inst_slug=eq.'+encodeURIComponent(INST.slug)+'&used_by=eq.'+encodeURIComponent(STUDENT.email)+'&select=course_id')||[];
   if(!codes.some(function(k){return k.course_id===cid}))return goHome();
   $('vHome').style.display='none';$('vAuth').style.display='none';
+  showTabs(false);
   $('vCourse').style.display='block';
   $('cTitle').textContent=c.title;
   var vs=await sb('wl_videos?course_id=eq.'+cid+'&order=pos.asc,id.asc&select=*')||[];
@@ -493,6 +531,34 @@ function playVid(cid,vid,yt,el){
 }
 var MATS=[], QZ=[], QI=0, QSCORE=0, QANS=[];
 function applyTheme(){try{document.documentElement.setAttribute('data-theme',(INST&&INST.theme)||'dark')}catch(e){}}
+function aTab(name){
+  var map={home:'vHome',courses:'vCourses',profile:'vProfile'};
+  for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
+    var tb=$('tb'+(k.charAt(0).toUpperCase()+k.slice(1)));if(tb)tb.className=(k===name?'on':'');}
+  var nav=$('appTabs');if(nav)nav.style.display='flex';
+  if(name==='profile')renderProfile();
+  try{window.scrollTo(0,0)}catch(e){}
+}
+function showTabs(on){var nav=$('appTabs');if(nav)nav.style.display=on?'flex':'none'}
+function renderProfile(){
+  var el=$('pfBody');if(!el||!STUDENT)return;
+  el.innerHTML='<div class="pf-av">'+esc(String(STUDENT.name||'S').trim().charAt(0).toUpperCase())+'</div>'+
+    '<b class="pf-nm">'+esc(STUDENT.name||'Student')+'</b>'+
+    '<span class="pf-em">'+esc(STUDENT.email||'')+'</span>'+
+    '<div class="pf-row"><span>Institute</span><b>'+esc((INST&&INST.name)||'')+'</b></div>'+
+    '<div class="pf-row"><span>App</span><b>'+esc((INST&&INST.slug)||'')+'</b></div>'+
+    '<div class="pf-row"><span>Theme</span><b>'+esc((INST&&INST.theme)||'dark')+'</b></div>';
+}
+function pwaManifest(){
+  try{
+    var nm=(INST&&INST.name)||'My App';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="120" fill="'+((INST&&INST.brand_color)||'#f59e0b')+'"/><text x="50%" y="58%" font-size="300" font-family="system-ui,Arial" font-weight="800" fill="#0b0e14" text-anchor="middle">'+esc(String(nm).charAt(0).toUpperCase())+'</text></svg>';
+    var m={name:nm,short_name:String(nm).slice(0,14),start_url:(location.pathname+'?i='+((INST&&INST.slug)||'')),scope:location.pathname,display:'standalone',background_color:'#0b0e14',theme_color:((INST&&INST.brand_color)||'#f59e0b'),icons:[{src:'data:image/svg+xml;utf8,'+encodeURIComponent(svg),sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};
+    var b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});
+    var l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);
+    document.head.appendChild(l);
+  }catch(e){}
+}
 function cTab(name){
   var map={videos:'cVideos',library:'cLibrary',tests:'cTests'};
   for(var k in map){var el=$(map[k]);if(el)el.style.display=(k===name)?'block':'none';
